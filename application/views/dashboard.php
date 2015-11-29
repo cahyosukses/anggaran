@@ -335,16 +335,16 @@
         </li>
         <li class=" "> <a href="javascript:;;"> <i class="fa fa-graduation-cap"></i> <span class="title">Transaksi</span> <span class="selected"></span> <span class="arrow "></span></a> 
             <ul class="sub-menu">
-                <li> <a onclick="load_menu('<?= base_url('') ?>'); return false;" href="<?= base_url('') ?>"> Penerimaan Bank </a> </li>
-                <li> <a onclick="load_menu('<?= base_url('') ?>'); return false;" href="<?= base_url('') ?>"> Penerimaan Pajak </a> </li>
-                <li> <a onclick="load_menu('<?= base_url('') ?>'); return false;" href="<?= base_url('') ?>"> Pencairan Dana </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('transaksi/penerimaan_bank') ?>'); return false;" href="<?= base_url('') ?>"> Penerimaan Bank </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('transaksi/penerimaan_pajak') ?>'); return false;" href="<?= base_url('') ?>"> Penerimaan Pajak </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('transaksi/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> Pencairan Dana </a> </li>
             </ul>
         </li>
         <li class=" "> <a href="javascript:;;"> <i class="fa fa-child"></i> <span class="title">Laporan</span> <span class="selected"></span> <span class="arrow "></span></a> 
             <ul class="sub-menu">
-                <li> <a onclick="load_menu('<?= base_url('') ?>'); return false;" href="<?= base_url('') ?>"> Lap. Penerimaan Bank </a> </li>
-                <li> <a onclick="load_menu('<?= base_url('') ?>'); return false;" href="<?= base_url('') ?>"> Lap. Penerimaan Pajak </a> </li>
-                <li> <a onclick="load_menu('<?= base_url('') ?>'); return false;" href="<?= base_url('') ?>"> Lap. Pencairan Dana </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('laporan/penerimaan_bank') ?>'); return false;" href="<?= base_url('') ?>"> Lap. Penerimaan Bank </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('laporan/penerimaan_pajak') ?>'); return false;" href="<?= base_url('') ?>"> Lap. Penerimaan Pajak </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> Lap. Pencairan Dana </a> </li>
             </ul>
         </li>
         <li class=" "> <a href="javascript:;;"> <i class="fa fa-wrench"></i> <span class="title">Konfigurasi</span> <span class="selected"></span> <span class="arrow "></span></a> 

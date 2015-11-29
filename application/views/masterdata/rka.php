@@ -14,6 +14,35 @@
             reset_form();
             get_list_rka(1);
         });
+        
+        $('#parent_code').select2({
+            width: '100%',
+            ajax: {
+                url: "<?= base_url('api/masterdata_auto/rka_auto') ?>",
+                dataType: 'json',
+                quietMillis: 100,
+                data: function (term, page) { // page is the one-based page number tracked by Select2
+                    return {
+                        q: term, //search term
+                        page: page, // page number
+                        jenissppb: $('#jenisbarang2').val()
+                    };
+                },
+                results: function (data, page) {
+                    var more = (page * 20) < data.total; // whether or not there are more results available
+         
+                    // notice we return the value of more so Select2 knows if more results can be loaded
+                    return {results: data.data, more: more};
+                }
+            },
+            formatResult: function(data){
+                var markup = data.kode+' - '+data.nama_program;
+                return markup;
+            }, 
+            formatSelection: function(data){
+                return data.kode+' - '+data.nama_program;
+            }
+        });
     });
     
     function get_list_rka(p, id) {
@@ -30,7 +59,7 @@
             },
             success: function(data) {
                 if ((p > 1) & (data.data.length === 0)) {
-                    get_list_alumni(p-1);
+                    get_list_rka(p-1);
                     return false;
                 };
 
@@ -60,7 +89,7 @@
                             str+= '<tr data-tt-id='+i+'-'+i2+' data-tt-parent-id='+i+' class="'+highlight+'">'+
                                 '<td align="center"></td>'+
                                 '<td>'+v2.kode+'</td>'+
-                                '<td style="text-indent: 20px;">'+v2.nama_program+'</td>'+
+                                '<td><div style="margin-left: 20px;">'+v2.nama_program+'</div></td>'+
                                 '<td>-</td>'+
                                 '<td align="center" class=aksi>'+
                                     '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v2.id+'\')"><i class="fa fa-pencil"></i></button> '+
@@ -71,7 +100,7 @@
                                 str+= '<tr data-tt-id='+i+'-'+i2+'-'+i3+' data-tt-parent-id='+i+'-'+i2+' class="'+highlight+'">'+
                                     '<td align="center"></td>'+
                                     '<td>'+v3.kode+'</td>'+
-                                    '<td style="text-indent: 40px;">'+v3.nama_program+'</td>'+
+                                    '<td><div style="margin-left: 40px;">'+v3.nama_program+'</div></td>'+
                                     '<td>-</td>'+
                                     '<td align="center" class=aksi>'+
                                         '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v3.id+'\')"><i class="fa fa-pencil"></i></button> '+
@@ -82,7 +111,7 @@
                                     str+= '<tr data-tt-id='+i+'-'+i2+'-'+i3+'-'+i4+' data-tt-parent-id='+i+'-'+i2+'-'+i3+' class="'+highlight+'">'+
                                         '<td align="center"></td>'+
                                         '<td>'+v4.kode+'</td>'+
-                                        '<td style="text-indent: 60px;">'+v4.nama_program+'</td>'+
+                                        '<td><div style="margin-left: 60px;">'+v4.nama_program+'</div></td>'+
                                         '<td>-</td>'+
                                         '<td align="center" class=aksi>'+
                                             '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v4.id+'\')"><i class="fa fa-pencil"></i></button> '+
@@ -93,7 +122,7 @@
                                         str+= '<tr data-tt-id='+i+'-'+i2+'-'+i3+'-'+i4+'-'+i5+' data-tt-parent-id='+i+'-'+i2+'-'+i3+'-'+i4+' class="'+highlight+'">'+
                                             '<td align="center"></td>'+
                                             '<td>'+v5.kode+'</td>'+
-                                            '<td style="text-indent: 80px;">'+v5.nama_program+'</td>'+
+                                            '<td><div style="margin-left: 80px;">'+v5.nama_program+'</div></td>'+
                                             '<td>-</td>'+
                                             '<td align="center" class=aksi>'+
                                                 '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v5.id+'\')"><i class="fa fa-pencil"></i></button> '+
@@ -111,6 +140,7 @@
             },
             complete: function() {
                 hide_ajax_indicator();
+                //$("#example-advanced").treetable({ expandable: true });
             },
             error: function(e){
                 hide_ajax_indicator();
@@ -122,6 +152,7 @@
         $('input, select, textarea').val('');
         $('#oldpict').html('');
         $('input[type=checkbox], input[type=radio]').removeAttr('checked');
+        $('#s2id_parent_code a .select2-chosen').html('');
     }
 
     function edit_rka(id) {
@@ -130,47 +161,15 @@
         $('#datamodal h4.modal-title').html('Edit RKA');
         $.ajax({
             type: 'GET',
-            url: '<?= base_url('api/restrictarea/rkas') ?>/page/1/id/'+id,
+            url: '<?= base_url('api/masterdata/rka') ?>/id/'+id,
             dataType: 'json',
             success: function(data) {
-                $('#id').val(data.data[0].id);
-                $('#judul').val(data.data[0].judul);
-                tinyMCE.activeEditor.setContent(data.data[0].isi);
-                $('#gambar').val(data.data[0].gambar);
-                $('#oldpict').html('<img src="<?= base_url('assets/img/rka') ?>/'+data.data[0].gambar+'" width="300px;" />');
-                if (data.data[0].attachment !== '') {
-                    $('#oldattachment').html('<a target="blank" href="<?= base_url('assets/img/rka') ?>/'+data.data[0].attachment+'" >Download File </a> <i title="Klik untuk menghapus file" onclick="removeFile('+data.data[0].id+');" class="fa fa-times-circle"></i>');
-                }
-            }
-        });
-    }
-    
-    function removeFile(id) {
-        bootbox.dialog({
-            message: "Anda yakin akan menghapus file ini?",
-            title: "Konfirmasi Simpan",
-            buttons: {
-              batal: {
-                label: '<i class="fa fa-times-circle"></i> Tidak',
-                className: "btn-default",
-                callback: function() {
-
-                }
-              },
-              ya: {
-                label: '<i class="fa fa-trash"></i>  Ya',
-                className: "btn-primary",
-                callback: function() {
-                    $.ajax({
-                        type: 'DELETE',
-                        url: '<?= base_url('api/restrictarea/rka_file') ?>/id/'+id,
-                        success: function(data) {
-                            message_delete_success();
-                            $('#oldattachment').empty();
-                        }
-                    });
-                }
-              }
+                $('#id').val(data.data.id);
+                $('#judul').val(data.data.kode);
+                $('#isi').val(data.data.nama_program);
+                $('#parent_code').val(data.data.id_parent);
+                $('#nominal').val(numberToCurrency(data.data.nominal));
+                $('#s2id_parent_code a .select2-chosen').html(data.data.parent_code+' - '+data.data.parent_name);
             }
         });
     }
@@ -180,7 +179,7 @@
     }
 
     function konfirmasi_save() {
-        $('#isi_rka').val(tinyMCE.get('isi').getContent());
+        //$('#isi_rka').val(tinyMCE.get('isi').getContent());
         bootbox.dialog({
             message: "Anda yakin akan menyimpan data ini?",
             title: "Konfirmasi Simpan",
@@ -204,10 +203,11 @@
       }
 
     function save_rka() {
-        $('#formadd').ajaxSubmit({
-            target: '#output',
+        $.ajax({
+            type: 'POST',
+            url: '<?= base_url('api/masterdata/rka') ?>',
             dataType: 'json',
-            data: $('#formadd').serialize()+'&isi='+tinyMCE.activeEditor.getContent(),
+            data: $('#formadd').serialize(),
             beforeSend: function() {
                 show_ajax_indicator();
             },
@@ -318,11 +318,12 @@
               <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body">
-                <form action="<?= base_url('api/restrictarea/rka') ?>" id="formadd" method="post" role="form" enctype="multipart/form-data">
+                <form id="formadd" method="post" role="form">
                 <input type="hidden" name="id" id="id" />
-                <input type="hidden" name="gambar" id="gambar" />
-                <input type="hidden" name="attachment" id="attachment" />
-                <input type="hidden" name="isi_rka" id="isi_rka" />
+                <div class="form-group">
+                    <label class="control-label">Kode Parent:</label>
+                    <input type="text" name="parent" class="js-data-example-ajax" id="parent_code" />
+                </div>
                 <div class="form-group">
                     <label for="recipient-name" class="control-label">Kode RKA:</label>
                     <input type="text" name="judul"  class="form-control" id="judul">
@@ -330,6 +331,10 @@
                 <div class="form-group">
                     <label for="recipient-name" class="control-label">Uraian:</label>
                     <textarea name="isi" id="isi" class="isi form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">Nominal<br/><small>Diisikan hanya untuk rincian kegiatan</small>:</label>
+                    <input type="text" name="nominal"  class="form-control" onkeyup="FormNum(this);" id="nominal">
                 </div>
             </form>
             </div>

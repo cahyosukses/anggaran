@@ -5906,9 +5906,9 @@ ul.progress-list li  .progress{
  .select2-container .select2-choice .select2-arrow b:before {
     font-family: 'FontAwesome';
 	content: "\f0d7";
-	position:relative;
-	top:2px;
-	right:5px;
+	/*position:relative;*/
+	top:5px;
+	right:-5px;
     font-size:12px;   	
 }
 .select2-dropdown-open .select2-choice .select2-arrow b{
@@ -13450,8 +13450,8 @@ ul.progress-list li  .progress{
     font-family: 'FontAwesome';
 	content: "\f0d7";
 	position:relative;
-	top:2px;
-	right:5px;
+/*	top:2px;
+	right:5px;*/
     font-size:12px;   	
 }
 .select2-dropdown-open .select2-choice .select2-arrow b{
@@ -13536,7 +13536,7 @@ border-bottom-left-radius: 2px;
 	color: #6F7B8A;
 	font-size:12px;
 	padding-left:8px;
-	padding-top:0px;
+	padding-top:8px;
 	position: relative;
     top: -5px;
 }

@@ -37,14 +37,17 @@ class Masterdata extends REST_Controller {
         }
     }
     
+    function rka_get() {
+        $data = $this->m_masterdata->get_rka($this->get('id'));
+        $this->response($data, 200);
+    }
+    
     function rka_post() {
         $data = $this->m_masterdata->save_rka();
         $this->response($data, 200);
     }
     
     function rka_delete() {
-        $data = $this->db->query("select gambar from tb_rka where id = '".$this->get('id')."'")->row();
-        @unlink('assets/img/rka/'.$data->gambar);
         $this->db->delete('tb_rka', array('id' => $this->get('id')));
     }
 }

@@ -11,7 +11,7 @@ class M_masterdata extends CI_Model {
         }
         $limitation =" limit $start , $limit";
         
-        $sql = "select * from tb_rka where id_parent is NULL $q order by id desc";
+        $sql = "select * from tb_rka where id_parent is NULL $q order by id";
         $query = $this->db->query($sql.$limitation)->result();
         //echo $sql . $limitation;
         foreach ($query as $key1 => $val1) {
@@ -44,9 +44,10 @@ class M_masterdata extends CI_Model {
     function save_rka() {
         $id = post_safe('id');
         $data_array = array(
-            'judul' => post_safe('judul'),
-            'isi' => post_safe('isi_rka'),
-            //'gambar' => (!empty(strtolower($_FILES['mFile']['name']))?strtolower($_FILES['mFile']['name']):'')
+            'id_parent' => (post_safe('parent') !== '')?post_safe('parent'):NULL,
+            'kode' => post_safe('judul'),
+            'nama_program' => post_safe('isi'),
+            'nominal' => currencyToNumber(post_safe('nominal'))
         );
         if ($id === '') {
             $this->db->insert('tb_rka', $data_array);
@@ -61,4 +62,31 @@ class M_masterdata extends CI_Model {
         return $result;
         
     }
+    
+    function get_auto_rka($param, $start, $limit) {
+        $q = NULL;
+        
+        $limitation = " limit $start, $limit";
+        $select = "select *";
+        $count = "select count(id) as count ";
+        $sql = "from tb_rka
+            where LENGTH(kode) <= '4' and (nama_program like ('%".$param['search']."%') or kode like ('".$param['search']."%')) $q order by kode";
+        
+        $data['data'] = $this->db->query($select.$sql.$limitation)->result();
+        if ($this->db->query($select.$sql.$limitation)->num_rows() > 0) {
+            $data['total'] = $this->db->query($count.$sql)->row()->count;
+        }
+        return $data;
+    }
+    
+    function get_rka($id_rka) {
+        $sql = "select r1.*, IFNULL(r2.nama_program,'') as parent_name, IFNULL(r2.kode,'') as parent_code
+            from tb_rka r1 
+            left join tb_rka r2 on (r1.id_parent = r2.id)
+            where r1.id = '".$id_rka."'
+            ";
+        $data['data'] = $this->db->query($sql)->row();
+        return $data;
+    }
+    
 }

@@ -11,8 +11,8 @@ class User extends CI_Controller {
         $this->load->helper('login');
         $user = $this->session->userdata('user');
         $name = explode(' ', $this->session->userdata('nama'));
-        
-        if ($user != '') {
+        //echo "1234".$user;
+        if (!empty($user)) {
             //$data = $this->menu_user_load_data();
             $data['title'] = 'Manajemen Anggaran';
             $data['first_name'] = $name[0];
@@ -61,7 +61,12 @@ class User extends CI_Controller {
     }
 
     public function is_login() {
-        
+        $data['title'] = 'Manajemen Anggaran | Login';
+        $user = $this->session->userdata('user');
+        if (empty($user)) {
+            //echo "FUCKER";
+            $this->load->view('logmein', $data);
+        }
     }
 
     function logout() {
