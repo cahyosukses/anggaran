@@ -56,6 +56,7 @@
             dataType: 'json',
             beforeSend: function() {
                 show_ajax_indicator();
+                $("#example-advanced").treetable('destroy');
             },
             success: function(data) {
                 if ((p > 1) & (data.data.length === 0)) {
@@ -79,7 +80,7 @@
                             '<td align="center">'+((i+1) + ((data.page - 1) * data.limit))+'</td>'+
                             '<td>'+v.kode+'</td>'+
                             '<td>'+v.nama_program+'</td>'+
-                            '<td>-</td>'+
+                            '<td align="right">'+numberToCurrency(v.total)+'</td>'+
                             '<td align="center" class=aksi>'+
                                 '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v.id+'\')"><i class="fa fa-pencil"></i></button> '+
                                 '<button type="button" class="btn btn-default btn-mini" onclick="delete_rka(\''+v.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
@@ -90,7 +91,7 @@
                                 '<td align="center"></td>'+
                                 '<td>'+v2.kode+'</td>'+
                                 '<td><div style="margin-left: 20px;">'+v2.nama_program+'</div></td>'+
-                                '<td>-</td>'+
+                                '<td></td>'+
                                 '<td align="center" class=aksi>'+
                                     '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v2.id+'\')"><i class="fa fa-pencil"></i></button> '+
                                     '<button type="button" class="btn btn-default btn-mini" onclick="delete_rka(\''+v2.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
@@ -101,7 +102,7 @@
                                     '<td align="center"></td>'+
                                     '<td>'+v3.kode+'</td>'+
                                     '<td><div style="margin-left: 40px;">'+v3.nama_program+'</div></td>'+
-                                    '<td>-</td>'+
+                                    '<td></td>'+
                                     '<td align="center" class=aksi>'+
                                         '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v3.id+'\')"><i class="fa fa-pencil"></i></button> '+
                                         '<button type="button" class="btn btn-default btn-mini" onclick="delete_rka(\''+v3.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
@@ -112,7 +113,7 @@
                                         '<td align="center"></td>'+
                                         '<td>'+v4.kode+'</td>'+
                                         '<td><div style="margin-left: 60px;">'+v4.nama_program+'</div></td>'+
-                                        '<td>-</td>'+
+                                        '<td></td>'+
                                         '<td align="center" class=aksi>'+
                                             '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v4.id+'\')"><i class="fa fa-pencil"></i></button> '+
                                             '<button type="button" class="btn btn-default btn-mini" onclick="delete_rka(\''+v4.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
@@ -123,7 +124,7 @@
                                             '<td align="center"></td>'+
                                             '<td>'+v5.kode+'</td>'+
                                             '<td><div style="margin-left: 80px;">'+v5.nama_program+'</div></td>'+
-                                            '<td>-</td>'+
+                                            '<td align="right">'+numberToCurrency(v5.nominal)+'</td>'+
                                             '<td align="center" class=aksi>'+
                                                 '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v5.id+'\')"><i class="fa fa-pencil"></i></button> '+
                                                 '<button type="button" class="btn btn-default btn-mini" onclick="delete_rka(\''+v5.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
@@ -134,9 +135,9 @@
                             });
                         });
                     $('#example-advanced tbody').append(str);
-                    $("#example-advanced").treetable({ expandable: true });
                     no = v.id;
                 });                
+                $("#example-advanced").treetable({ expandable: true });
             },
             complete: function() {
                 hide_ajax_indicator();
@@ -213,13 +214,13 @@
             },
             success: function(msg) {
                 var page = $('.pagination .active a').html();
-                $('#datamodal').modal('hide');
                 hide_ajax_indicator();
                 $('input[type=text],input[type=file], select').val('');
                 if (msg.act === 'add') {
                     message_add_success();
                     get_list_rka(1);
                 } else {
+                    $('#datamodal').modal('hide');
                     message_edit_success();
                     get_list_rka(page);
                 }
