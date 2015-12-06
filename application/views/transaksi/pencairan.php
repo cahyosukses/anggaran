@@ -2,23 +2,29 @@
 <script type="text/javascript">
     $(function() {
         
-        get_list_rka(1);
-        $('#add_rka').click(function() {
+        get_list_pencairan(1);
+        $('#add_pencairan').click(function() {
             reset_form();
             $('#datamodal').modal('show');
-            $('#datamodal h4.modal-title').html('Tambah RKA');
+            $('#datamodal h4.modal-title').html('Tambah Transaksi Bank');
             //tinyMCE.activeEditor.setContent('');
         });
+        
+        $('#tanggal').datepicker({
+                format: 'dd/mm/yyyy'
+        }).on('changeDate', function(){
+            $(this).datepicker('hide');
+        });
 
-        $('#reload_rka').click(function() {
+        $('#reload_pencairan').click(function() {
             reset_form();
-            get_list_rka(1);
+            get_list_pencairan(1);
         });
         
-        $('#parent_code').select2({
+        $('#nokode').select2({
             width: '100%',
             ajax: {
-                url: "<?= base_url('api/masterdata_auto/rka_auto') ?>",
+                url: "<?= base_url('api/masterdata_auto/rka_trans_auto') ?>",
                 dataType: 'json',
                 quietMillis: 100,
                 data: function (term, page) { // page is the one-based page number tracked by Select2
@@ -36,31 +42,32 @@
                 }
             },
             formatResult: function(data){
-                var markup = data.kode+' - '+data.nama_program;
+                var markup = data.kode+'<br/>'+data.nama_program;
                 return markup;
             }, 
             formatSelection: function(data){
-                return data.kode+' - '+data.nama_program;
+                $('#uraian').val(data.nama_program);
+                return data.kode;
             }
         });
     });
     
-    function get_list_rka(p, id) {
+    function get_list_pencairan(p, id) {
         $('#form-pencarian').modal('hide');
         var id = '';
         $.ajax({
             type : 'GET',
-            url: '<?= base_url("api/masterdata/rkas") ?>/page/'+p+'/id/'+id,
+            url: '<?= base_url("api/transaksi/pencairans") ?>/page/'+p+'/id/'+id,
             data: '',
             cache: false,
             dataType: 'json',
             beforeSend: function() {
                 show_ajax_indicator();
-                $("#example-advanced").treetable('destroy');
+                //$("#example-advanced").treetable('destroy');
             },
             success: function(data) {
                 if ((p > 1) & (data.data.length === 0)) {
-                    get_list_rka(p-1);
+                    get_list_pencairan(p-1);
                     return false;
                 };
 
@@ -78,66 +85,20 @@
                     };
                     str+= '<tr data-tt-id='+i+' class="'+highlight+'">'+
                             '<td align="center">'+((i+1) + ((data.page - 1) * data.limit))+'</td>'+
+                            '<td align="center">'+datefmysql(v.tanggal)+'</td>'+
+                            '<td align="center">'+v.nourut+'</td>'+
+                            '<td>'+v.no_bukti+'</td>'+
                             '<td>'+v.kode+'</td>'+
-                            '<td>'+v.nama_program+'</td>'+
-                            '<td align="right"></td>'+
+                            '<td>'+v.uraian+'</td>'+
+                            '<td align="right">'+numberToCurrency(v.nominal)+'</td>'+
+                            '<td>'+v.penerima+'</td>'+
                             '<td align="center" class=aksi>'+
-                                '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v.id+'\')"><i class="fa fa-pencil"></i></button> '+
-                                '<button type="button" class="btn btn-default btn-mini" onclick="delete_rka(\''+v.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
+                                '<button type="button" class="btn btn-default btn-mini" onclick="edit_pencairan(\''+v.id+'\')"><i class="fa fa-pencil"></i></button> '+
+                                '<button type="button" class="btn btn-default btn-mini" onclick="delete_pencairan(\''+v.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
                             '</td>'+
                         '</tr>';
-                        $.each(v.child1, function(i2, v2) {
-                            str+= '<tr data-tt-id='+i+'-'+i2+' data-tt-parent-id='+i+' class="'+highlight+'">'+
-                                '<td align="center"></td>'+
-                                '<td>'+v2.kode+'</td>'+
-                                '<td><div style="margin-left: 20px;">'+v2.nama_program+'</div></td>'+
-                                '<td align="right">'+numberToCurrency(v2.total)+'</td>'+
-                                '<td align="center" class=aksi>'+
-                                    '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v2.id+'\')"><i class="fa fa-pencil"></i></button> '+
-                                    '<button type="button" class="btn btn-default btn-mini" onclick="delete_rka(\''+v2.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
-                                '</td>'+
-                            '</tr>';
-                            $.each(v2.child2, function(i3, v3) {
-                                str+= '<tr data-tt-id='+i+'-'+i2+'-'+i3+' data-tt-parent-id='+i+'-'+i2+' class="'+highlight+'">'+
-                                    '<td align="center"></td>'+
-                                    '<td>'+v3.kode+'</td>'+
-                                    '<td><div style="margin-left: 40px;">'+v3.nama_program+'</div></td>'+
-                                    '<td></td>'+
-                                    '<td align="center" class=aksi>'+
-                                        '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v3.id+'\')"><i class="fa fa-pencil"></i></button> '+
-                                        '<button type="button" class="btn btn-default btn-mini" onclick="delete_rka(\''+v3.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
-                                    '</td>'+
-                                '</tr>';
-                                $.each(v3.child3, function(i4, v4) {
-                                    str+= '<tr data-tt-id='+i+'-'+i2+'-'+i3+'-'+i4+' data-tt-parent-id='+i+'-'+i2+'-'+i3+' class="'+highlight+'">'+
-                                        '<td align="center"></td>'+
-                                        '<td>'+v4.kode+'</td>'+
-                                        '<td><div style="margin-left: 60px;">'+v4.nama_program+'</div></td>'+
-                                        '<td></td>'+
-                                        '<td align="center" class=aksi>'+
-                                            '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v4.id+'\')"><i class="fa fa-pencil"></i></button> '+
-                                            '<button type="button" class="btn btn-default btn-mini" onclick="delete_rka(\''+v4.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
-                                        '</td>'+
-                                    '</tr>';
-                                    $.each(v4.child4, function(i5, v5) {
-                                        str+= '<tr data-tt-id='+i+'-'+i2+'-'+i3+'-'+i4+'-'+i5+' data-tt-parent-id='+i+'-'+i2+'-'+i3+'-'+i4+' class="'+highlight+'">'+
-                                            '<td align="center"></td>'+
-                                            '<td>'+v5.kode+'</td>'+
-                                            '<td><div style="margin-left: 80px;">'+v5.nama_program+'</div></td>'+
-                                            '<td align="right">'+numberToCurrency(v5.nominal)+'</td>'+
-                                            '<td align="center" class=aksi>'+
-                                                '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v5.id+'\')"><i class="fa fa-pencil"></i></button> '+
-                                                '<button type="button" class="btn btn-default btn-mini" onclick="delete_rka(\''+v5.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
-                                            '</td>'+
-                                        '</tr>';
-                                    });
-                                });
-                            });
-                        });
                     $('#example-advanced tbody').append(str);
-                    no = v.id;
-                });                
-                $("#example-advanced").treetable({ expandable: true });
+                });
             },
             complete: function() {
                 hide_ajax_indicator();
@@ -151,36 +112,38 @@
 
     function reset_form() {
         $('input, select, textarea').val('');
-        $('#oldpict').html('');
         $('input[type=checkbox], input[type=radio]').removeAttr('checked');
-        $('#s2id_parent_code a .select2-chosen').html('');
+        $('#tanggal').val('<?= date("d/m/Y") ?>');
     }
 
-    function edit_rka(id) {
+    function edit_pencairan(id) {
         $('#oldpict').html('');
         $('#datamodal').modal('show');
-        $('#datamodal h4.modal-title').html('Edit RKA');
+        $('#datamodal h4.modal-title').html('Edit Transaksi Bank');
         $.ajax({
             type: 'GET',
-            url: '<?= base_url('api/masterdata/rka') ?>/id/'+id,
+            url: '<?= base_url('api/transaksi/pencairans') ?>/page/1/id/'+id,
             dataType: 'json',
             success: function(data) {
-                $('#id').val(data.data.id);
-                $('#judul').val(data.data.kode);
-                $('#isi').val(data.data.nama_program);
-                $('#parent_code').val(data.data.id_parent);
-                $('#nominal').val(numberToCurrency(data.data.nominal));
-                $('#s2id_parent_code a .select2-chosen').html(data.data.parent_code+' - '+data.data.parent_name);
+                $('#id').val(data.data[0].id);
+                $('#tanggal').val(datefmysql(data.data[0].tanggal));
+                $('#nourut').val(data.data[0].nourut);
+                $('#nokode').val(data.data[0].id_rka);
+                $('#nobukti').val(data.data[0].no_bukti);
+                $('#s2id_nokode a .select2-chosen').html(data.data[0].kode);
+                $('#uraian').val(data.data[0].uraian);
+                $('#nominal').val(numberToCurrency(data.data[0].nominal));
+                $('#penerima').val(data.data[0].penerima);
             }
         });
     }
         
     function paging(p) {
-        get_list_rka(p);
+        get_list_pencairan(p);
     }
 
     function konfirmasi_save() {
-        //$('#isi_rka').val(tinyMCE.get('isi').getContent());
+        //$('#isi_pencairan').val(tinyMCE.get('isi').getContent());
         bootbox.dialog({
             message: "Anda yakin akan menyimpan data ini?",
             title: "Konfirmasi Simpan",
@@ -196,17 +159,17 @@
                 label: '<i class="fa fa-save"></i>  Ya',
                 className: "btn-primary",
                 callback: function() {
-                    save_rka();
+                    save_pencairan();
                 }
               }
             }
           });
       }
 
-    function save_rka() {
+    function save_pencairan() {
         $.ajax({
             type: 'POST',
-            url: '<?= base_url('api/masterdata/rka') ?>',
+            url: '<?= base_url('api/transaksi/pencairan') ?>',
             dataType: 'json',
             data: $('#formadd').serialize(),
             beforeSend: function() {
@@ -218,25 +181,25 @@
                 $('#judul, #isi, #nominal').val('');
                 //reset_form();
                 if (msg.act === 'add') {
-                    //$('#datamodal').modal('hide');
+                    $('#datamodal').modal('hide');
                     message_add_success();
-                    get_list_rka(1);
+                    get_list_pencairan(1);
                 } else {
                     $('#datamodal').modal('hide');
                     message_edit_success();
-                    get_list_rka(page);
+                    get_list_pencairan(page);
                 }
             },
             error: function() {
                 $('#datamodal').modal('hide');
                 var page = $('.pagination .active a').html();
-                get_list_rka(page);
+                get_list_pencairan(page);
                 hide_ajax_indicator();
             }
         });
     }
 
-    function delete_rka(id, page) {
+    function delete_pencairan(id, page) {
         bootbox.dialog({
             message: "Anda yakin akan menghapus data ini?",
             title: "Konfirmasi Hapus",
@@ -254,11 +217,11 @@
                 callback: function() {
                     $.ajax({
                         type: 'DELETE',
-                        url: '<?= base_url('api/masterdata/rka') ?>/id/'+id,
+                        url: '<?= base_url('api/transaksi/pencairan') ?>/id/'+id,
                         dataType: 'json',
                         success: function(data) {
                             message_delete_success();
-                            get_list_rka(page);
+                            get_list_pencairan(page);
                         }
                     });
                 }
@@ -268,7 +231,7 @@
     }
 
     function paging(page, tab, search) {
-        get_list_rka(page, search);
+        get_list_pencairan(page);
     }
 
 </script>
@@ -283,11 +246,11 @@
         <div class="col-md-12">
           <div class="grid simple ">
             <div class="grid-title">
-              <h4>Daftar List RKA</h4>
+              <h4>Daftar List <?= $title ?></h4>
                 <div class="tools"> 
-                    <button id="add_rka" class="btn btn-info btn-mini"><i class="fa fa-plus-circle"></i> Tambah</button>
+                    <button id="add_pencairan" class="btn btn-info btn-mini"><i class="fa fa-plus-circle"></i> Tambah</button>
                     <!--<button id="cari_button" class="btn btn-mini"><i class="fa fa-search"></i> Cari</button>-->
-                    <button id="reload_rka" class="btn btn-mini"><i class="fa fa-refresh"></i> Reload</button>
+                    <button id="reload_pencairan" class="btn btn-mini"><i class="fa fa-refresh"></i> Reload</button>
                 </div>
             </div>
             <div class="grid-body">
@@ -296,10 +259,14 @@
                     <table class="table table-bordered table-stripped table-hover tabel-advance" id="example-advanced">
                         <thead>
                         <tr>
-                          <th width="7%">No</th>
-                          <th width="8%" class="left">No. Kode</th>
-                          <th width="65%" class="left">Uraian</th>
+                          <th width="3%">No</th>
+                          <th width="7%">Tanggal</th>
+                          <th width="3%" class="left">Urut</th>
+                          <th width="10%" class="left">No. Bukti</th>
+                          <th width="7%">Kode&nbsp;RKA</th>
+                          <th width="40%" class="left">Uraian</th>
                           <th width="10%" class="right">Jumlah</th>
+                          <th width="10%" class="left">Penerima</th>
                           <th width="10%"></th>
                         </tr>
                         </thead>
@@ -324,20 +291,32 @@
                 <form id="formadd" method="post" role="form">
                 <input type="hidden" name="id" id="id" />
                 <div class="form-group">
-                    <label class="control-label">Kode Parent:</label>
-                    <input type="text" name="parent" class="js-data-example-ajax" id="parent_code" />
+                    <label class="control-label">Tanggal:</label>
+                    <input type="text" name="tanggal" class="form-control" style="width: 145px;" id="tanggal" value="<?= date("d/m/Y") ?>" />
                 </div>
                 <div class="form-group">
-                    <label for="recipient-name" class="control-label">Kode RKA:</label>
-                    <input type="text" name="judul"  class="form-control" id="judul">
+                    <label for="recipient-name" class="control-label">No. Urut:</label>
+                    <input type="number" min="1" name="nourut"  class="form-control" id="nourut" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">No. Kode RKA:</label>
+                    <input type="text" name="nokode"  class="js-data-example-ajax" id="nokode" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">No. Bukti:</label>
+                    <input type="text" name="nobukti"  class="form-control" id="nobukti" maxlength="10">
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="control-label">Uraian:</label>
-                    <textarea name="isi" id="isi" class="isi form-control"></textarea>
+                    <textarea name="uraian" class="form-control" id="uraian"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="recipient-name" class="control-label">Nominal<br/><small>Diisikan hanya untuk rincian kegiatan</small>:</label>
+                    <label for="recipient-name" class="control-label">Jumlah:</label>
                     <input type="text" name="nominal"  class="form-control" onkeyup="FormNum(this);" id="nominal">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">Penerima:</label>
+                    <input type="text" name="penerima" class="form-control" id="penerima" />
                 </div>
             </form>
             </div>

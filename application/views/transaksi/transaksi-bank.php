@@ -1,91 +1,105 @@
 <title><?= $title ?></title>
-<script type="text/javascript" src="<?= base_url('assets/tinymce/tinymce.min.js') ?>"></script>
 <script type="text/javascript">
     $(function() {
         
-        tinyMCE.init({
-            selector: "textarea#isi",
-            theme: "modern",
-            menubar: "tools table format view insert edit",
-            force_br_newlines : false,
-            force_p_newlines : false,
-            forced_root_block : '',
-            height: 500,
-            valid_elements : '*[*]',
-            plugins: [
-                "advlist autolink lists link image charmap print preview anchor",
-                "searchreplace visualblocks code fullscreen",
-                "insertdatetime media table contextmenu paste"
-            ],
-            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-            setup: function(ed){
-                ed.on("init",
-                    function(ed) {
-                        tinyMCE.get('textarea#isi');
-                        tinyMCE.execCommand('mceRepaint');
-                    }
-                );
-            }
-        });
-        get_list_profile(1);
-        $('#add_profile').click(function() {
+        get_list_penerimaan_bank(1);
+        $('#add_penerimaan_bank').click(function() {
             reset_form();
             $('#datamodal').modal('show');
-            $('#datamodal h4.modal-title').html('Tambah Profile');
-            tinyMCE.activeEditor.setContent('');
+            $('#datamodal h4.modal-title').html('Tambah Transaksi Bank');
+            //tinyMCE.activeEditor.setContent('');
+        });
+        
+        $('#tanggal').datepicker({
+                format: 'dd/mm/yyyy'
+        }).on('changeDate', function(){
+            $(this).datepicker('hide');
         });
 
-        $('#reload_profile').click(function() {
+        $('#reload_penerimaan_bank').click(function() {
             reset_form();
-            get_list_profile(1);
+            get_list_penerimaan_bank(1);
+        });
+        
+        $('#parent_code').select2({
+            width: '100%',
+            ajax: {
+                url: "<?= base_url('api/masterdata_auto/penerimaan_bank_auto') ?>",
+                dataType: 'json',
+                quietMillis: 100,
+                data: function (term, page) { // page is the one-based page number tracked by Select2
+                    return {
+                        q: term, //search term
+                        page: page, // page number
+                        jenissppb: $('#jenisbarang2').val()
+                    };
+                },
+                results: function (data, page) {
+                    var more = (page * 20) < data.total; // whether or not there are more results available
+         
+                    // notice we return the value of more so Select2 knows if more results can be loaded
+                    return {results: data.data, more: more};
+                }
+            },
+            formatResult: function(data){
+                var markup = data.kode+' - '+data.nama_program;
+                return markup;
+            }, 
+            formatSelection: function(data){
+                return data.kode+' - '+data.nama_program;
+            }
         });
     });
     
-    function get_list_profile(p, id) {
+    function get_list_penerimaan_bank(p, id) {
         $('#form-pencarian').modal('hide');
         var id = '';
         $.ajax({
             type : 'GET',
-            url: '<?= base_url("api/restrictarea/profiles") ?>/page/'+p+'/id/'+id,
+            url: '<?= base_url("api/transaksi/penerimaan_banks") ?>/page/'+p+'/id/'+id,
             data: '',
             cache: false,
             dataType: 'json',
             beforeSend: function() {
                 show_ajax_indicator();
+                $("#example-advanced").treetable('destroy');
             },
             success: function(data) {
                 if ((p > 1) & (data.data.length === 0)) {
-                    get_list_alumni(p-1);
+                    get_list_penerimaan_bank(p-1);
                     return false;
                 };
 
                 $('#pagination_no').html(pagination(data.jumlah, data.limit, data.page, 1));
                 $('#page_summary_no').html(page_summary(data.jumlah, data.data.length, data.limit, data.page));
 
-                $('#load_data_table tbody').empty();          
-                var str = '';
+                $('#example-advanced tbody').empty();          
+                
 
                 $.each(data.data,function(i, v){
+                    var str = '';
                     var highlight = 'odd';
                     if ((i % 2) === 1) {
                         highlight = 'even';
                     };
-                    str = '<tr class="'+highlight+'">'+
+                    str+= '<tr data-tt-id='+i+' class="'+highlight+'">'+
                             '<td align="center">'+((i+1) + ((data.page - 1) * data.limit))+'</td>'+
-                            '<td>'+v.link+'</td>'+
-                            '<td>'+v.judul+'</td>'+
-                            '<td>'+v.aktif+'</td>'+
+                            '<td align="center">'+datefmysql(v.tanggal)+'</td>'+
+                            '<td>'+v.kode+'</td>'+
+                            '<td>'+v.nobukti+'</td>'+
+                            '<td align="right">'+numberToCurrency(v.nominal)+'</td>'+
+                            '<td>'+v.jenis+'</td>'+
                             '<td align="center" class=aksi>'+
-                                '<button type="button" class="btn btn-default btn-mini" onclick="edit_profile(\''+v.id+'\')"><i class="fa fa-pencil"></i></button> '+
-                                '<button type="button" class="btn btn-default btn-mini" onclick="delete_profile(\''+v.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
+                                '<button type="button" class="btn btn-default btn-mini" onclick="edit_penerimaan_bank(\''+v.id+'\')"><i class="fa fa-pencil"></i></button> '+
+                                '<button type="button" class="btn btn-default btn-mini" onclick="delete_penerimaan_bank(\''+v.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
                             '</td>'+
                         '</tr>';
-                    $('#load_data_table tbody').append(str);
-                    no = v.id;
-                });                
+                    $('#example-advanced tbody').append(str);
+                });
             },
             complete: function() {
                 hide_ajax_indicator();
+                //$("#example-advanced").treetable({ expandable: true });
             },
             error: function(e){
                 hide_ajax_indicator();
@@ -95,34 +109,35 @@
 
     function reset_form() {
         $('input, select, textarea').val('');
-        $('#oldpict').html('');
         $('input[type=checkbox], input[type=radio]').removeAttr('checked');
+        $('#tanggal').val('<?= date("d/m/Y") ?>');
     }
 
-    function edit_profile(id) {
+    function edit_penerimaan_bank(id) {
         $('#oldpict').html('');
         $('#datamodal').modal('show');
-        $('#datamodal h4.modal-title').html('Edit Profile');
+        $('#datamodal h4.modal-title').html('Edit Transaksi Bank');
         $.ajax({
             type: 'GET',
-            url: '<?= base_url('api/restrictarea/profiles') ?>/page/1/id/'+id,
+            url: '<?= base_url('api/transaksi/penerimaan_banks') ?>/page/1/id/'+id,
             dataType: 'json',
             success: function(data) {
                 $('#id').val(data.data[0].id);
-                $('#link').val(data.data[0].link);
-                $('#judul').val(data.data[0].judul);
-                tinyMCE.activeEditor.setContent(data.data[0].keterangan);
-                $('#aktif').val(data.data[0].aktif);
+                $('#tanggal').val(datefmysql(data.data[0].tanggal));
+                $('#nokode').val(data.data[0].kode);
+                $('#nobukti').val(data.data[0].nobukti);
+                $('#nominal').val(numberToCurrency(data.data[0].nominal));
+                $('#jenis_transaksi').val(data.data[0].jenis);
             }
         });
     }
         
     function paging(p) {
-        get_list_profile(p);
+        get_list_penerimaan_bank(p);
     }
 
     function konfirmasi_save() {
-        $('#isi_profile').val(tinyMCE.get('isi').getContent());
+        //$('#isi_penerimaan_bank').val(tinyMCE.get('isi').getContent());
         bootbox.dialog({
             message: "Anda yakin akan menyimpan data ini?",
             title: "Konfirmasi Simpan",
@@ -138,45 +153,47 @@
                 label: '<i class="fa fa-save"></i>  Ya',
                 className: "btn-primary",
                 callback: function() {
-                    save_profile();
+                    save_penerimaan_bank();
                 }
               }
             }
           });
       }
 
-    function save_profile() {
+    function save_penerimaan_bank() {
         $.ajax({
             type: 'POST',
-            url: '<?= base_url('api/restrictarea/profile') ?>',
+            url: '<?= base_url('api/transaksi/penerimaan_bank') ?>',
             dataType: 'json',
-            data: $('#formadd').serialize()+'&isi='+tinyMCE.activeEditor.getContent(),
+            data: $('#formadd').serialize(),
             beforeSend: function() {
                 show_ajax_indicator();
             },
             success: function(msg) {
                 var page = $('.pagination .active a').html();
-                $('#datamodal').modal('hide');
                 hide_ajax_indicator();
-                $('input[type=text],input[type=file], select').val('');
+                $('#judul, #isi, #nominal').val('');
+                //reset_form();
                 if (msg.act === 'add') {
+                    $('#datamodal').modal('hide');
                     message_add_success();
-                    get_list_profile(1);
+                    get_list_penerimaan_bank(1);
                 } else {
+                    $('#datamodal').modal('hide');
                     message_edit_success();
-                    get_list_profile(page);
+                    get_list_penerimaan_bank(page);
                 }
             },
             error: function() {
                 $('#datamodal').modal('hide');
                 var page = $('.pagination .active a').html();
-                get_list_profile(page);
+                get_list_penerimaan_bank(page);
                 hide_ajax_indicator();
             }
         });
     }
 
-    function delete_profile(id, page) {
+    function delete_penerimaan_bank(id, page) {
         bootbox.dialog({
             message: "Anda yakin akan menghapus data ini?",
             title: "Konfirmasi Hapus",
@@ -194,11 +211,11 @@
                 callback: function() {
                     $.ajax({
                         type: 'DELETE',
-                        url: '<?= base_url('api/restrictarea/profile') ?>/id/'+id,
+                        url: '<?= base_url('api/transaksi/penerimaan_bank') ?>/id/'+id,
                         dataType: 'json',
                         success: function(data) {
                             message_delete_success();
-                            get_list_profile(page);
+                            get_list_penerimaan_bank(page);
                         }
                     });
                 }
@@ -208,7 +225,7 @@
     }
 
     function paging(page, tab, search) {
-        get_list_profile(page, search);
+        get_list_penerimaan_bank(page, search);
     }
 
 </script>
@@ -223,23 +240,25 @@
         <div class="col-md-12">
           <div class="grid simple ">
             <div class="grid-title">
-              <h4>Daftar List Profile</h4>
+              <h4>Daftar List <?= $title ?></h4>
                 <div class="tools"> 
-                    <button id="add_profile" class="btn btn-info btn-mini"><i class="fa fa-plus-circle"></i> Tambah</button>
+                    <button id="add_penerimaan_bank" class="btn btn-info btn-mini"><i class="fa fa-plus-circle"></i> Tambah</button>
                     <!--<button id="cari_button" class="btn btn-mini"><i class="fa fa-search"></i> Cari</button>-->
-                    <button id="reload_profile" class="btn btn-mini"><i class="fa fa-refresh"></i> Reload</button>
+                    <button id="reload_penerimaan_bank" class="btn btn-mini"><i class="fa fa-refresh"></i> Reload</button>
                 </div>
             </div>
             <div class="grid-body">
               <div class="scroller" data-height="220px">
                 <div id="result">
-                    <table class="table table-bordered table-stripped table-hover" id="load_data_table">
+                    <table class="table table-bordered table-stripped table-hover tabel-advance" id="example-advanced">
                         <thead>
                         <tr>
-                          <th width="5%">No</th>
-                          <th width="20%" class="left">Nama Link</th>
-                          <th width="55%" class="left">Judul Profile</th>
-                          <th width="10%" class="left">Aktif</th>
+                          <th width="3%">No</th>
+                          <th width="7%">Tanggal</th>
+                          <th width="20%" class="left">No. Kode</th>
+                          <th width="20%" class="left">No. Bukti</th>
+                          <th width="20%" class="right">Jumlah</th>
+                          <th width="20%" class="left">Jenis Transaksi</th>
                           <th width="10%"></th>
                         </tr>
                         </thead>
@@ -254,35 +273,37 @@
           </div>
         </div>
         <div id="datamodal" class="modal fade">
-            <div class="modal-dialog" style="width: 800px">
+            <div class="modal-dialog" style="width: 700px">
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body">
-            <form id="formadd" method="post" role="form">
+                <form id="formadd" method="post" role="form">
                 <input type="hidden" name="id" id="id" />
-                <input type="hidden" name="gambar" id="gambar" />
-                <input type="hidden" name="isi_profile" id="isi_profile" />
                 <div class="form-group">
-                    <label for="recipient-name" class="control-label">Nama Link:</label>
-                    <input type="text" name="link"  class="form-control" id="link">
+                    <label class="control-label">Tanggal:</label>
+                    <input type="text" name="tanggal" class="form-control" style="width: 145px;" id="tanggal" value="<?= date("d/m/Y") ?>" />
                 </div>
                 <div class="form-group">
-                    <label for="recipient-name" class="control-label">Judul:</label>
-                    <input type="text" name="judul"  class="form-control" id="judul">
+                    <label for="recipient-name" class="control-label">No. Kode:</label>
+                    <input type="text" name="nokode"  class="form-control" id="nokode" maxlength="10">
                 </div>
                 <div class="form-group">
-                    <label for="recipient-name" class="control-label">Isi Profile:</label>
-                    <textarea name="isi" id="isi" class="isi"></textarea>
+                    <label for="recipient-name" class="control-label">No. Bukti:</label>
+                    <input type="text" name="nobukti"  class="form-control" id="nobukti" maxlength="10">
                 </div>
                 <div class="form-group">
-                    <label for="recipient-name" class="control-label">Aktif:</label>
-                    <select name="aktif" class="form-control" id="aktif">
+                    <label for="recipient-name" class="control-label">Jumlah:</label>
+                    <input type="text" name="nominal"  class="form-control" onkeyup="FormNum(this);" id="nominal">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">Jenis Transaksi:</label>
+                    <select name="jenis_transaksi" id="jenis_transaksi" class="form-control">
                         <option value="">Pilih ...</option>
-                        <option value="Ya">Ya</option>
-                        <option value="Tidak">Tidak</option>
+                        <option value="Penerimaan">Penerimaan</option>
+                        <option value="Penarikan">Penarikan</option>
                     </select>
                 </div>
             </form>

@@ -19,20 +19,23 @@ class M_masterdata extends CI_Model {
             $result2 = $this->db->query($sql_child)->result();
             $query[$key1]->child1 = $result2;
             
-            $sql_total = "select sum(r5.nominal) as total
-                from tb_rka r1 
-                join tb_rka r2 on (r1.id = r2.id_parent)
-                join tb_rka r3 on (r2.id = r3.id_parent)
-                join tb_rka r4 on (r3.id = r4.id_parent)
-                join tb_rka r5 on (r4.id = r5.id_parent)
-                where r1.id = '".$val1->id."'";
-            $query[$key1]->total = $this->db->query($sql_total)->row()->total;
+            
             
             
             foreach ($result2 as $key2 => $val2) {
                 $sql_child2 = "select * from tb_rka where id_parent = '".$val2->id."'";
                 $result3 = $this->db->query($sql_child2)->result();
                 $query[$key1]->child1[$key2]->child2 = $result3;
+                
+                $sql_total = "select sum(r5.nominal) as total
+                from tb_rka r1 
+                join tb_rka r2 on (r1.id = r2.id_parent)
+                join tb_rka r3 on (r2.id = r3.id_parent)
+                join tb_rka r4 on (r3.id = r4.id_parent)
+                join tb_rka r5 on (r4.id = r5.id_parent)
+                where r2.id = '".$val2->id."'";
+                $query[$key1]->child1[$key2]->total = $this->db->query($sql_total)->row()->total;
+            
                 foreach ($result3 as $key3 => $val3) {
                     $sql_child3 = "select * from tb_rka where id_parent = '".$val3->id."'";
                     $result4 = $this->db->query($sql_child3)->result();
@@ -81,7 +84,23 @@ class M_masterdata extends CI_Model {
         $select = "select *";
         $count = "select count(id) as count ";
         $sql = "from tb_rka
-            where LENGTH(kode) <= '4' and (nama_program like ('%".$param['search']."%') or kode like ('".$param['search']."%')) $q order by kode";
+            where LENGTH(kode) <= '10' and (nama_program like ('%".$param['search']."%') or kode like ('".$param['search']."%')) $q order by kode";
+        
+        $data['data'] = $this->db->query($select.$sql.$limitation)->result();
+        if ($this->db->query($select.$sql.$limitation)->num_rows() > 0) {
+            $data['total'] = $this->db->query($count.$sql)->row()->count;
+        }
+        return $data;
+    }
+    
+    function get_auto_rka_trans($param, $start, $limit) {
+        $q = NULL;
+        
+        $limitation = " limit $start, $limit";
+        $select = "select *";
+        $count = "select count(id) as count ";
+        $sql = "from tb_rka
+            where LENGTH(kode) > '8' and (nama_program like ('%".$param['search']."%') or kode like ('".$param['search']."%')) $q order by kode";
         
         $data['data'] = $this->db->query($select.$sql.$limitation)->result();
         if ($this->db->query($select.$sql.$limitation)->num_rows() > 0) {
