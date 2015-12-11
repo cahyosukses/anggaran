@@ -6,7 +6,7 @@
         $('#add_pencairan').click(function() {
             reset_form();
             $('#datamodal').modal('show');
-            $('#datamodal h4.modal-title').html('Tambah Transaksi Bank');
+            $('#datamodal h4.modal-title').html('Tambah Transaksi Pencairan Bank');
             //tinyMCE.activeEditor.setContent('');
         });
         
@@ -19,6 +19,36 @@
         $('#reload_pencairan').click(function() {
             reset_form();
             get_list_pencairan(1);
+        });
+        
+        $('#nourut').select2({
+            width: '100%',
+            ajax: {
+                url: "<?= base_url('api/masterdata_auto/rka_trans_auto') ?>",
+                dataType: 'json',
+                quietMillis: 100,
+                data: function (term, page) { // page is the one-based page number tracked by Select2
+                    return {
+                        q: term, //search term
+                        page: page, // page number
+                        jenissppb: $('#jenisbarang2').val()
+                    };
+                },
+                results: function (data, page) {
+                    var more = (page * 20) < data.total; // whether or not there are more results available
+         
+                    // notice we return the value of more so Select2 knows if more results can be loaded
+                    return {results: data.data, more: more};
+                }
+            },
+            formatResult: function(data){
+                var markup = data.kode+'<br/>'+data.nama_program;
+                return markup;
+            }, 
+            formatSelection: function(data){
+                $('#uraian').val(data.nama_program);
+                return data.kode;
+            }
         });
         
         $('#nokode').select2({
@@ -119,7 +149,7 @@
     function edit_pencairan(id) {
         $('#oldpict').html('');
         $('#datamodal').modal('show');
-        $('#datamodal h4.modal-title').html('Edit Transaksi Bank');
+        $('#datamodal h4.modal-title').html('Edit Transaksi Pencairan Bank');
         $.ajax({
             type: 'GET',
             url: '<?= base_url('api/transaksi/pencairans') ?>/page/1/id/'+id,
@@ -296,7 +326,7 @@
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="control-label">No. Urut:</label>
-                    <input type="number" min="1" name="nourut"  class="form-control" id="nourut" maxlength="10">
+                    <input type="text" name="nourut"  class="js-data-example-ajax" id="nourut">
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="control-label">No. Kode RKA:</label>
