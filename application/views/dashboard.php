@@ -327,32 +327,40 @@
    <!-- BEGIN SIDEBAR MENU -->	
     <p class="menu-title">BROWSE <span class="pull-right"><a href="javascript:;"><i class="fa fa-refresh"></i></a></span></p>
     <ul>	
+        
         <li class="start active "> <a class="home" href="<?= base_url('user') ?>"> <i class="icon-custom-home"></i> <span class="title">Dashboard</span> <span class="selected"></span> <span class="badge badge-important pull-right">2</span></a> </li>
+        <li class=" "> <a href="javascript:;;"> <i class="fa fa-wrench"></i> <span class="title">Konfigurasi</span> <span class="selected"></span> <span class="arrow "></span></a> 
+            <ul class="sub-menu">
+                <li> <a onclick="load_menu('<?= base_url('config/tahun_anggaran') ?>'); return false;" href="<?= base_url('') ?>"> Tahun Anggaran </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('config/changepassword') ?>'); return false;" href="<?= base_url('') ?>"> Ubah Password </a> </li>
+            </ul>
+        </li>
         <li class=" "> <a href="javascript:;;"> <i class="fa fa-windows"></i> <span class="title">Masterdata</span> <span class="selected"></span> <span class="arrow "></span></a> 
             <ul class="sub-menu">
-                <li> <a onclick="load_menu('<?= base_url('masterdata/rka') ?>'); return false;" href="<?= base_url('') ?>"> Rencana Kegiatan dan Anggaran </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('masterdata/rka') ?>'); return false;" href="<?= base_url('') ?>"> RKAM </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('masterdata/penerimaan') ?>'); return false;" href="<?= base_url('') ?>"> Penerimaan </a> </li>
             </ul>
         </li>
         <li class=" "> <a href="javascript:;;"> <i class="fa fa-graduation-cap"></i> <span class="title">Transaksi</span> <span class="selected"></span> <span class="arrow "></span></a> 
             <ul class="sub-menu">
-                <li> <a onclick="load_menu('<?= base_url('transaksi/penerimaan_bank') ?>'); return false;" href="<?= base_url('') ?>"> Penerimaan Bank </a> </li>
-                <li> <a onclick="load_menu('<?= base_url('transaksi/penerimaan_pajak') ?>'); return false;" href="<?= base_url('') ?>"> Penerimaan Pajak </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('transaksi/penerimaan_bank') ?>'); return false;" href="<?= base_url('') ?>"> Transaksi Bank </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('transaksi/penerimaan_pajak') ?>'); return false;" href="<?= base_url('') ?>"> Transaksi Pajak </a> </li>
                 <li> <a onclick="load_menu('<?= base_url('transaksi/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> Pencairan Dana </a> </li>
             </ul>
         </li>
         <li class=" "> <a href="javascript:;;"> <i class="fa fa-child"></i> <span class="title">Laporan</span> <span class="selected"></span> <span class="arrow "></span></a> 
             <ul class="sub-menu">
-<!--                <li> <a onclick="load_menu('<?= base_url('laporan/penerimaan_bank') ?>'); return false;" href="<?= base_url('') ?>"> Lap. Penerimaan Bank </a> </li>
-                <li> <a onclick="load_menu('<?= base_url('laporan/penerimaan_pajak') ?>'); return false;" href="<?= base_url('') ?>"> Lap. Penerimaan Pajak </a> </li>
-                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> Lap. Pencairan Dana </a> </li>-->
-                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> Penggunaan Dana BOS </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> BOS-1 </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> BOS-2 </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> BOS-3 </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> BOS-4 </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> BOS-5 </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> BOS-6 </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> BOS-7 </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> BOS-8 </a> </li>
             </ul>
         </li>
-        <li class=" "> <a href="javascript:;;"> <i class="fa fa-wrench"></i> <span class="title">Konfigurasi</span> <span class="selected"></span> <span class="arrow "></span></a> 
-            <ul class="sub-menu">
-                <li> <a onclick="load_menu('<?= base_url('restrictarea/changepassword') ?>'); return false;" href="<?= base_url('') ?>"> Ubah Password </a> </li>
-            </ul>
-        </li>
+        <li class=" "> &nbsp;</li>
     </ul>
 	
 	<a href="#" class="scrollup">Scroll</a>

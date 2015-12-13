@@ -41,4 +41,16 @@ class Masterdata_auto extends REST_Controller{
         $this->response($data, 200);
     }
     
+    function penerimaan_auto_get() {
+        $param['search']    = get_safe('q');
+        $start = $this->start(get_safe('page'));
+        $data = $this->m_masterdata->get_auto_penerimaan($param, $start, $this->limit);
+        if ((get_safe('page') == 1) & (get_safe('q') == '')) {
+            $pilih[] = array('id'=>'', 'kode' => '', 'nama_program' =>'');
+            $data['data'] = array_merge($pilih, $data['data']);
+            $data['total'] += 1;
+        }
+        $this->response($data, 200);
+    }
+    
 }

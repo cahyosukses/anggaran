@@ -2,23 +2,23 @@
 <script type="text/javascript">
     $(function() {
         $('.semester').hide();
-        get_list_rka(1);
-        $('#add_rka').click(function() {
+        get_list_penerimaan(1);
+        $('#add_penerimaan').click(function() {
             reset_form();
             $('#datamodal').modal('show');
-            $('#datamodal h4.modal-title').html('Tambah RKA');
+            $('#datamodal h4.modal-title').html('Tambah Penerimaan');
             //tinyMCE.activeEditor.setContent('');
         });
 
-        $('#reload_rka').click(function() {
+        $('#reload_penerimaan').click(function() {
             reset_form();
-            get_list_rka(1);
+            get_list_penerimaan(1);
         });
         
         $('#parent_code').select2({
             width: '100%',
             ajax: {
-                url: "<?= base_url('api/masterdata_auto/rka_auto') ?>",
+                url: "<?= base_url('api/masterdata_auto/penerimaan_auto') ?>",
                 dataType: 'json',
                 quietMillis: 100,
                 data: function (term, page) { // page is the one-based page number tracked by Select2
@@ -48,12 +48,12 @@
         });
     });
     
-    function get_list_rka(p, id) {
+    function get_list_penerimaan(p, id) {
         $('#form-pencarian').modal('hide');
         var id = '';
         $.ajax({
             type : 'GET',
-            url: '<?= base_url("api/masterdata/rkas") ?>/page/'+p+'/id/'+id,
+            url: '<?= base_url("api/masterdata/penerimaans") ?>/page/'+p+'/id/'+id,
             data: '',
             cache: false,
             dataType: 'json',
@@ -63,7 +63,7 @@
             },
             success: function(data) {
                 if ((p > 1) & (data.data.length === 0)) {
-                    get_list_rka(p-1);
+                    get_list_penerimaan(p-1);
                     return false;
                 };
 
@@ -83,10 +83,10 @@
                             '<td align="center">'+((i+1) + ((data.page - 1) * data.limit))+'</td>'+
                             '<td>'+v.kode+'</td>'+
                             '<td>'+v.nama_program+'</td>'+
-                            '<td align="right"></td>'+
+                            '<td align="right">'+numberToCurrency(v.total)+'</td>'+
                             '<td align="center" class=aksi>'+
-                                '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v.id+'\')"><i class="fa fa-pencil"></i></button> '+
-                                '<button type="button" class="btn btn-default btn-mini" onclick="delete_rka(\''+v.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
+                                '<button type="button" class="btn btn-default btn-mini" onclick="edit_penerimaan(\''+v.id+'\')"><i class="fa fa-pencil"></i></button> '+
+                                '<button type="button" class="btn btn-default btn-mini" onclick="delete_penerimaan(\''+v.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
                             '</td>'+
                         '</tr>';
                         $.each(v.child1, function(i2, v2) {
@@ -94,48 +94,12 @@
                                 '<td align="center"></td>'+
                                 '<td>'+v2.kode+'</td>'+
                                 '<td><div style="margin-left: 20px;">'+v2.nama_program+'</div></td>'+
-                                '<td align="right">'+numberToCurrency(v2.total)+'</td>'+
+                                '<td align="right">'+numberToCurrency(v2.nominal)+'</td>'+
                                 '<td align="center" class=aksi>'+
-                                    '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v2.id+'\')"><i class="fa fa-pencil"></i></button> '+
-                                    '<button type="button" class="btn btn-default btn-mini" onclick="delete_rka(\''+v2.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
+                                    '<button type="button" class="btn btn-default btn-mini" onclick="edit_penerimaan(\''+v2.id+'\')"><i class="fa fa-pencil"></i></button> '+
+                                    '<button type="button" class="btn btn-default btn-mini" onclick="delete_penerimaan(\''+v2.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
                                 '</td>'+
                             '</tr>';
-                            $.each(v2.child2, function(i3, v3) {
-                                str+= '<tr data-tt-id='+i+'-'+i2+'-'+i3+' data-tt-parent-id='+i+'-'+i2+' class="'+highlight+'">'+
-                                    '<td align="center"></td>'+
-                                    '<td>'+v3.kode+'</td>'+
-                                    '<td><div style="margin-left: 40px;">'+v3.nama_program+'</div></td>'+
-                                    '<td></td>'+
-                                    '<td align="center" class=aksi>'+
-                                        '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v3.id+'\')"><i class="fa fa-pencil"></i></button> '+
-                                        '<button type="button" class="btn btn-default btn-mini" onclick="delete_rka(\''+v3.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
-                                    '</td>'+
-                                '</tr>';
-                                $.each(v3.child3, function(i4, v4) {
-                                    str+= '<tr data-tt-id='+i+'-'+i2+'-'+i3+'-'+i4+' data-tt-parent-id='+i+'-'+i2+'-'+i3+' class="'+highlight+'">'+
-                                        '<td align="center"></td>'+
-                                        '<td>'+v4.kode+'</td>'+
-                                        '<td><div style="margin-left: 60px;">'+v4.nama_program+'</div></td>'+
-                                        '<td></td>'+
-                                        '<td align="center" class=aksi>'+
-                                            '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v4.id+'\')"><i class="fa fa-pencil"></i></button> '+
-                                            '<button type="button" class="btn btn-default btn-mini" onclick="delete_rka(\''+v4.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
-                                        '</td>'+
-                                    '</tr>';
-                                    $.each(v4.child4, function(i5, v5) {
-                                        str+= '<tr data-tt-id='+i+'-'+i2+'-'+i3+'-'+i4+'-'+i5+' data-tt-parent-id='+i+'-'+i2+'-'+i3+'-'+i4+' class="'+highlight+'">'+
-                                            '<td align="center"></td>'+
-                                            '<td>'+v5.kode+'</td>'+
-                                            '<td><div style="margin-left: 80px;">'+v5.nama_program+'</div></td>'+
-                                            '<td align="right">'+numberToCurrency(v5.nominal)+'</td>'+
-                                            '<td align="center" class=aksi>'+
-                                                '<button type="button" class="btn btn-default btn-mini" onclick="edit_rka(\''+v5.id+'\')"><i class="fa fa-pencil"></i></button> '+
-                                                '<button type="button" class="btn btn-default btn-mini" onclick="delete_rka(\''+v5.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
-                                            '</td>'+
-                                        '</tr>';
-                                    });
-                                });
-                            });
                         });
                     $('#example-advanced tbody').append(str);
                     no = v.id;
@@ -161,13 +125,13 @@
         $('#id_tahun_anggaran').val('<?= $thn_anggaran->id ?>');
     }
 
-    function edit_rka(id) {
+    function edit_penerimaan(id) {
         $('#oldpict').html('');
         $('#datamodal').modal('show');
-        $('#datamodal h4.modal-title').html('Edit RKA');
+        $('#datamodal h4.modal-title').html('Edit Penerimaan');
         $.ajax({
             type: 'GET',
-            url: '<?= base_url('api/masterdata/rka') ?>/id/'+id,
+            url: '<?= base_url('api/masterdata/penerimaan') ?>/id/'+id,
             dataType: 'json',
             success: function(data) {
                 $('#id').val(data.data.id);
@@ -187,11 +151,11 @@
     }
         
     function paging(p) {
-        get_list_rka(p);
+        get_list_penerimaan(p);
     }
 
     function konfirmasi_save() {
-        //$('#isi_rka').val(tinyMCE.get('isi').getContent());
+        //$('#isi_penerimaan').val(tinyMCE.get('isi').getContent());
         bootbox.dialog({
             message: "Anda yakin akan menyimpan data ini?",
             title: "Konfirmasi Simpan",
@@ -207,17 +171,17 @@
                 label: '<i class="fa fa-save"></i>  Ya',
                 className: "btn-primary",
                 callback: function() {
-                    save_rka();
+                    save_penerimaan();
                 }
               }
             }
           });
       }
 
-    function save_rka() {
+    function save_penerimaan() {
         $.ajax({
             type: 'POST',
-            url: '<?= base_url('api/masterdata/rka') ?>',
+            url: '<?= base_url('api/masterdata/penerimaan') ?>',
             dataType: 'json',
             data: $('#formadd').serialize(),
             beforeSend: function() {
@@ -231,23 +195,23 @@
                 if (msg.act === 'add') {
                     //$('#datamodal').modal('hide');
                     message_add_success();
-                    get_list_rka(1);
+                    get_list_penerimaan(1);
                 } else {
                     $('#datamodal').modal('hide');
                     message_edit_success();
-                    get_list_rka(page);
+                    get_list_penerimaan(page);
                 }
             },
             error: function() {
                 $('#datamodal').modal('hide');
                 var page = $('.pagination .active a').html();
-                get_list_rka(page);
+                get_list_penerimaan(page);
                 hide_ajax_indicator();
             }
         });
     }
 
-    function delete_rka(id, page) {
+    function delete_penerimaan(id, page) {
         bootbox.dialog({
             message: "Anda yakin akan menghapus data ini?",
             title: "Konfirmasi Hapus",
@@ -265,11 +229,11 @@
                 callback: function() {
                     $.ajax({
                         type: 'DELETE',
-                        url: '<?= base_url('api/masterdata/rka') ?>/id/'+id,
+                        url: '<?= base_url('api/masterdata/penerimaan') ?>/id/'+id,
                         dataType: 'json',
                         success: function(data) {
                             message_delete_success();
-                            get_list_rka(page);
+                            get_list_penerimaan(page);
                         }
                     });
                 }
@@ -279,7 +243,7 @@
     }
 
     function paging(page, tab, search) {
-        get_list_rka(page, search);
+        get_list_penerimaan(page, search);
     }
 
 </script>
@@ -294,11 +258,11 @@
         <div class="col-md-12">
           <div class="grid simple ">
             <div class="grid-title">
-              <h4>Daftar List RKA</h4>
+              <h4>Daftar List Penerimaan</h4>
                 <div class="tools"> 
-                    <button id="add_rka" class="btn btn-info btn-mini"><i class="fa fa-plus-circle"></i> Tambah</button>
+                    <button id="add_penerimaan" class="btn btn-info btn-mini"><i class="fa fa-plus-circle"></i> Tambah</button>
                     <!--<button id="cari_button" class="btn btn-mini"><i class="fa fa-search"></i> Cari</button>-->
-                    <button id="reload_rka" class="btn btn-mini"><i class="fa fa-refresh"></i> Reload</button>
+                    <button id="reload_penerimaan" class="btn btn-mini"><i class="fa fa-refresh"></i> Reload</button>
                 </div>
             </div>
             <div class="grid-body">
@@ -344,7 +308,7 @@
                     <input type="text" name="parent" class="js-data-example-ajax" id="parent_code" />
                 </div>
                 <div class="form-group">
-                    <label for="recipient-name" class="control-label">Kode RKA:</label>
+                    <label for="recipient-name" class="control-label">Kode Penerimaan:</label>
                     <input type="text" name="judul"  class="form-control" id="judul">
                 </div>
                 <div class="form-group">
