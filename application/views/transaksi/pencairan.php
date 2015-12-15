@@ -31,7 +31,7 @@
                     return {
                         q: term, //search term
                         page: page, // page number
-                        jenissppb: $('#jenisbarang2').val()
+                        level: 4
                     };
                 },
                 results: function (data, page) {
@@ -46,6 +46,8 @@
                 return markup;
             }, 
             formatSelection: function(data){
+                $('#s2id_nokode a .select2-chosen').html('');
+                $('#nokode').val('');
                 $('#uraian').val(data.nama_program);
                 return data.kode;
             }
@@ -61,7 +63,7 @@
                     return {
                         q: term, //search term
                         page: page, // page number
-                        jenissppb: $('#jenisbarang2').val()
+                        parent: $('#nourut').val()
                     };
                 },
                 results: function (data, page) {
@@ -116,13 +118,14 @@
                     str+= '<tr data-tt-id='+i+' class="'+highlight+'">'+
                             '<td align="center">'+((i+1) + ((data.page - 1) * data.limit))+'</td>'+
                             '<td align="center">'+datefmysql(v.tanggal)+'</td>'+
-                            '<td align="center">'+v.nourut+'</td>'+
+                            //'<td align="center">'+v.nourut+'</td>'+
                             '<td>'+v.no_bukti+'</td>'+
                             '<td>'+v.kode+'</td>'+
                             '<td>'+v.uraian+'</td>'+
                             '<td align="right">'+numberToCurrency(v.nominal)+'</td>'+
                             '<td>'+v.penerima+'</td>'+
-                            '<td align="center" class=aksi>'+
+                            '<td align="right" class=aksi>'+
+                                '<button type="button" class="btn btn-default btn-mini" onclick="print_pencairan(\''+v.id+'\')"><i class="fa fa-print"></i></button> '+
                                 '<button type="button" class="btn btn-default btn-mini" onclick="edit_pencairan(\''+v.id+'\')"><i class="fa fa-pencil"></i></button> '+
                                 '<button type="button" class="btn btn-default btn-mini" onclick="delete_pencairan(\''+v.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
                             '</td>'+
@@ -138,6 +141,16 @@
                 hide_ajax_indicator();
             }
         });
+    }
+    
+    function print_pencairan(id) {
+        var wWidth = $(window).width();
+        var dWidth = wWidth * 1;
+        var wHeight= $(window).height();
+        var dHeight= wHeight * 1;
+        var x = screen.width/2 - dWidth/2;
+        var y = screen.height/2 - dHeight/2;
+        window.open('<?= base_url('transaksi/print_pencairan/') ?>?id='+id,'Cetak Transaksi Pencairan','width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
     }
 
     function reset_form() {
@@ -291,13 +304,13 @@
                         <tr>
                           <th width="3%">No</th>
                           <th width="7%">Tanggal</th>
-                          <th width="3%" class="left">Urut</th>
+                          <!--<th width="3%" class="left">Urut</th>-->
                           <th width="10%" class="left">No. Bukti</th>
                           <th width="7%">Kode&nbsp;RKA</th>
                           <th width="40%" class="left">Uraian</th>
                           <th width="10%" class="right">Jumlah</th>
                           <th width="10%" class="left">Penerima</th>
-                          <th width="10%"></th>
+                          <th width="13%"></th>
                         </tr>
                         </thead>
                         <tbody>

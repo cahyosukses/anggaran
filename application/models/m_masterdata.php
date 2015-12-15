@@ -98,12 +98,20 @@ class M_masterdata extends CI_Model {
     
     function get_auto_rka_trans($param, $start, $limit) {
         $q = NULL;
-        
+        if ($param['level'] === '') {
+            $q.=" and LENGTH(kode) > '8'";
+        }
+        if ($param['level'] !== '') {
+            $q.=" and LENGTH(kode) = '".($param['level']+($param['level']-1))."'";
+        }
+        if ($param['parent'] !== '') {
+            $q.=" and id_parent = '".$param['parent']."'";
+        }
         $limitation = " limit $start, $limit";
         $select = "select *";
         $count = "select count(id) as count ";
         $sql = "from tb_rka
-            where LENGTH(kode) > '8' and (nama_program like ('%".$param['search']."%') or kode like ('".$param['search']."%')) $q order by kode";
+            where (nama_program like ('%".$param['search']."%') or kode like ('".$param['search']."%')) $q order by kode";
         
         $data['data'] = $this->db->query($select.$sql.$limitation)->result();
         if ($this->db->query($select.$sql.$limitation)->num_rows() > 0) {

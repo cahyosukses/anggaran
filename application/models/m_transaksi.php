@@ -2,15 +2,21 @@
 
 class M_transaksi extends CI_Model {
     
+    function id_tahun_anggaran() {
+        return $this->db->get_where('tb_tahun_anggaran', array('aktifasi' => 'Ya'))->row()->id;
+    }
     function get_list_penerimaan_banks($limit = null, $start = null, $search = null) {
         $q = null;
         if ($search['id'] !== '') {
             $q.=" and id = '".$search['id']."'";
         }
-        $sql = "select * from tb_trans_bank where id is not NULL ";
+        $sql = "select * from tb_trans_bank where id is not NULL";
         $limitation = null;
-        $limitation.=" limit $start , $limit";
-        $query = $this->db->query($sql . $q . $limitation);
+        if ($limit !== NULL) {
+            $limitation.=" limit $start , $limit";
+        }
+        $order=" order by tanggal desc";
+        $query = $this->db->query($sql . $q . $order. $limitation);
         //echo $sql . $q . $limitation;
         $queryAll = $this->db->query($sql . $q);
         $data['data'] = $query->result();
@@ -37,7 +43,9 @@ class M_transaksi extends CI_Model {
         }
         $sql = "select * from tb_trans_pajak where id is not NULL ";
         $limitation = null;
-        $limitation.=" limit $start , $limit";
+        if ($limit !== NULL) {
+            $limitation.=" limit $start , $limit";
+        }
         $query = $this->db->query($sql . $q . $limitation);
         //echo $sql . $q . $limitation;
         $queryAll = $this->db->query($sql . $q);
@@ -68,12 +76,15 @@ class M_transaksi extends CI_Model {
             join tb_rka r on (p.id_rka = r.id) 
             where p.id is not NULL ";
         $limitation = null;
-        $limitation.=" limit $start , $limit";
+        if ($limit !== NULL) {
+            $limitation.=" limit $start , $limit";
+        }
         $query = $this->db->query($sql . $q . $limitation);
         //echo $sql . $q . $limitation;
         $queryAll = $this->db->query($sql . $q);
         $data['data'] = $query->result();
         $data['jumlah'] = $queryAll->num_rows();
+        //die(json_encode($data));
         return $data;
     }
     

@@ -1006,5 +1006,22 @@ function formatcurrency($floatcurr, $curr = "USD"){
         return strtolower(preg_replace(array('/[^a-zA-Z0-9 -]/', '/[ -]+/', '/^-|-$/'), 
         array('', '-', ''), remove_accent($str))); 
     }
+    
+    function triwulan($bulan) {
+        $triwulan = '';
+        if ($bulan >= 1 and $bulan <= 3) {
+            $triwulan = 'Pertama';
+        }
+        if ($bulan >= 4 and $bulan <= 6) {
+            $triwulan = 'Kedua';
+        }
+        if ($bulan >= 7 and $bulan <= 9) {
+            $triwulan = 'Ketiga';
+        }
+        if ($bulan >= 10 and $bulan <= 12) {
+            $triwulan = 'Keempat';
+        }
+        return $triwulan;
+    }
 
 ?>

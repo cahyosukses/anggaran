@@ -87,9 +87,11 @@
                             '<td align="center">'+datefmysql(v.tanggal)+'</td>'+
                             '<td>'+v.kode+'</td>'+
                             '<td>'+v.nobukti+'</td>'+
+                            '<td>'+v.keterangan+'</td>'+
                             '<td align="right">'+numberToCurrency(v.nominal)+'</td>'+
                             '<td>'+v.jenis+'</td>'+
                             '<td align="center" class=aksi>'+
+                                '<button type="button" class="btn btn-default btn-mini" onclick="print_bank(\''+v.id+'\')"><i class="fa fa-print"></i></button> '+
                                 '<button type="button" class="btn btn-default btn-mini" onclick="edit_penerimaan_bank(\''+v.id+'\')"><i class="fa fa-pencil"></i></button> '+
                                 '<button type="button" class="btn btn-default btn-mini" onclick="delete_penerimaan_bank(\''+v.id+'\','+data.page+');"><i class="fa fa-trash-o"></i></button>'+
                             '</td>'+
@@ -105,6 +107,16 @@
                 hide_ajax_indicator();
             }
         });
+    }
+    
+    function print_bank(id) {
+        var wWidth = $(window).width();
+            var dWidth = wWidth * 1;
+            var wHeight= $(window).height();
+            var dHeight= wHeight * 1;
+            var x = screen.width/2 - dWidth/2;
+            var y = screen.height/2 - dHeight/2;
+            window.open('<?= base_url('transaksi/print_bank/') ?>?id='+id,'Cetak Transaksi BANK','width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
     }
 
     function reset_form() {
@@ -126,6 +138,7 @@
                 $('#tanggal').val(datefmysql(data.data[0].tanggal));
                 $('#nokode').val(data.data[0].kode);
                 $('#nobukti').val(data.data[0].nobukti);
+                $('#uraian').val(data.data[0].keterangan);
                 $('#nominal').val(numberToCurrency(data.data[0].nominal));
                 $('#jenis_transaksi').val(data.data[0].jenis);
             }
@@ -255,11 +268,12 @@
                         <tr>
                           <th width="3%">No</th>
                           <th width="7%">Tanggal</th>
-                          <th width="20%" class="left">No. Kode</th>
-                          <th width="20%" class="left">No. Bukti</th>
-                          <th width="20%" class="right">Jumlah</th>
-                          <th width="20%" class="left">Jenis Transaksi</th>
-                          <th width="10%"></th>
+                          <th width="10%" class="left">No. Kode</th>
+                          <th width="10%" class="left">No. Bukti</th>
+                          <th width="37%" class="right">Keterangan</th>
+                          <th width="10%" class="right">Jumlah</th>
+                          <th width="10%" class="left">Jenis</th>
+                          <th width="13%"></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -293,6 +307,10 @@
                 <div class="form-group">
                     <label for="recipient-name" class="control-label">No. Bukti:</label>
                     <input type="text" name="nobukti"  class="form-control" id="nobukti" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">Uraian:</label>
+                    <textarea name="uraian" class="form-control" id="uraian"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="control-label">Jumlah:</label>

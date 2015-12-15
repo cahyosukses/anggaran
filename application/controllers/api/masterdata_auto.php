@@ -31,6 +31,8 @@ class Masterdata_auto extends REST_Controller{
     
     function rka_trans_auto_get() {
         $param['search']    = get_safe('q');
+        $param['level']     = get_safe('level');
+        $param['parent']    = get_safe('parent');
         $start = $this->start(get_safe('page'));
         $data = $this->m_masterdata->get_auto_rka_trans($param, $start, $this->limit);
         if ((get_safe('page') == 1) & (get_safe('q') == '')) {

@@ -15,6 +15,16 @@
             get_list_rka(1);
         });
         
+        $('#print_rka').click(function() {
+            var wWidth = $(window).width();
+            var dWidth = wWidth * 1;
+            var wHeight= $(window).height();
+            var dHeight= wHeight * 1;
+            var x = screen.width/2 - dWidth/2;
+            var y = screen.height/2 - dHeight/2;
+            window.open('<?= base_url('laporan/rincian_rkam') ?>','Cetak RKA','width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
+        });
+        
         $('#parent_code').select2({
             width: '100%',
             ajax: {
@@ -297,7 +307,7 @@
               <h4>Daftar List RKA</h4>
                 <div class="tools"> 
                     <button id="add_rka" class="btn btn-info btn-mini"><i class="fa fa-plus-circle"></i> Tambah</button>
-                    <!--<button id="cari_button" class="btn btn-mini"><i class="fa fa-search"></i> Cari</button>-->
+                    <button id="print_rka" class="btn btn-mini"><i class="fa fa-print"></i> Print RKA</button>
                     <button id="reload_rka" class="btn btn-mini"><i class="fa fa-refresh"></i> Reload</button>
                 </div>
             </div>

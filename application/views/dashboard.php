@@ -164,7 +164,7 @@
 		 <li class="dropdown"> <a id="main-menu-toggle" href="#main-menu"  class="" > <div class="iconset top-menu-toggle-white"></div> </a> </li>		 
 		</ul>
       <!-- BEGIN LOGO -->	
-      <div class="logo">SISTEM MANAJEMEN ANGGARAN</div>
+      <div class="logo">SIABOS</div>
       <!-- END LOGO --> 
       <ul class="nav pull-right notifcation-center">	
           <li class="dropdown" id="header_task_bar"> <a href="<?= base_url('user') ?>" class="dropdown-toggle active" data-toggle=""> <div class="iconset top-home"></div> </a> </li>
@@ -350,14 +350,12 @@
         </li>
         <li class=" "> <a href="javascript:;;"> <i class="fa fa-child"></i> <span class="title">Laporan</span> <span class="selected"></span> <span class="arrow "></span></a> 
             <ul class="sub-menu">
-                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> BOS-1 </a> </li>
-                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> BOS-2 </a> </li>
-                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> BOS-3 </a> </li>
-                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> BOS-4 </a> </li>
-                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> BOS-5 </a> </li>
-                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> BOS-6 </a> </li>
-                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> BOS-7 </a> </li>
-                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> BOS-8 </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('laporan/buku_kas_umum') ?>'); return false;" href="<?= base_url('') ?>"> Buku Kas Umum (K3) </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> Buku Pembantu Kas (K4)</a> </li>
+                <li> <a onclick="load_menu('<?= base_url('laporan/buku_pembantu_bank') ?>'); return false;" href="<?= base_url('') ?>"> Buku Pembantu Bank (K5) </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> Buku Pembantu Pajak (K6) </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> Penggunaan Dana BOS (K7) </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('laporan/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> Ops Non Personil BOS(K8) </a> </li>
             </ul>
         </li>
         <li class=" "> &nbsp;</li>
