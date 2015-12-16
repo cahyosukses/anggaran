@@ -24,7 +24,13 @@ class Transaksi extends REST_Controller {
         $start = ($this->get('page') - 1) * $this->limit;
         
         $search= array(
-            'id' => $this->get('id')
+            'id' => $this->get('id'),
+            'tanggal' => get_safe('tanggal'),
+            'kode' => get_safe('nokode'),
+            'nobukti' => get_safe('nobukti'),
+            'keterangan' => get_safe('uraian'),
+            'nominal' => currencyToNumber(get_safe('nominal')),
+            'jenis' => get_safe('jenis_transaksi'),
         );
         
         $data = $this->m_transaksi->get_list_penerimaan_banks($this->limit, $start, $search);
@@ -65,7 +71,13 @@ class Transaksi extends REST_Controller {
         $start = ($this->get('page') - 1) * $this->limit;
         
         $search= array(
-            'id' => $this->get('id')
+            'id' => $this->get('id'),
+            'tanggal' => get_safe('tanggal'),
+            'kode' => get_safe('nokode'),
+            'nobukti' => get_safe('nobukti'),
+            'keterangan' => get_safe('uraian'),
+            'jenis' => get_safe('jenis_transaksi'),
+            'jenis_pajak' => get_safe('jenis_pajak')
         );
         
         $data = $this->m_transaksi->get_list_penerimaan_pajaks($this->limit, $start, $search);
@@ -108,7 +120,13 @@ class Transaksi extends REST_Controller {
         $start = ($this->get('page') - 1) * $this->limit;
         
         $search= array(
-            'id' => $this->get('id')
+            'id' => $this->get('id'),
+            'awal' => date2mysql(get_safe('awal')),
+            'akhir' => date2mysql(get_safe('akhir')),
+            'nobukti' => get_safe('nobukti'),
+            'nokode' => get_safe('nokode'),
+            'nourut' => get_safe('nourut'),
+            'uraian' => get_safe('uraian')
         );
         
         $data = $this->m_transaksi->get_list_pencairans($this->limit, $start, $search);
@@ -126,11 +144,14 @@ class Transaksi extends REST_Controller {
         $data_array = array(
             'id' => post_safe('id'),
             'tanggal' => date2mysql(post_safe('tanggal')),
+            'tanggal_kegiatan' => date2mysql(post_safe('tanggal_kegiatan')),
             //'kode' => post_safe('nokode'),
 //            'nourut' => post_safe('nourut'),
             'id_rka' => post_safe('nokode'),
             'no_bukti' => post_safe('nobukti'),
             'uraian' => post_safe('uraian'),
+            'satuan' => post_safe('satuan'),
+            'volume' => post_safe('volume'),
             'nominal' => currencyToNumber(post_safe('nominal')),
             'penerima' => post_safe('penerima'),
             'id_tahun_anggaran' => $this->id_tahun_anggaran

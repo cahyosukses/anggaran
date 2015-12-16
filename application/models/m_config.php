@@ -48,4 +48,24 @@ class M_config extends CI_Model {
         }
         return $result;
     }
+    
+    function change_password() {
+        $data_post = array(
+            'passlama' => post_safe('passlama'),
+            'passbaru' => post_safe('passbaru'),
+            'ulangipass' => post_safe('ulangipass')
+        );
+        
+        $check = $this->db->get_where('tb_users', array('id' => $this->session->userdata('id_user'), 'password' => md5($data_post['passlama'])))->num_rows();
+        if ($check === 0) {
+            $result['status'] = FALSE;
+            $result['message']= 'Password lama yang anda masukkan salah !';
+        } else {
+            $this->db->where('id', $this->session->userdata('id_user'));
+            $this->db->update('tb_users', array('password' => md5($data_post['passbaru'])));
+            $result['status'] = TRUE;
+            $result['message']= 'Password barhasil diubah !';
+        }
+        return $result;
+    }
 }

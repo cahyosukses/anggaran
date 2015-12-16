@@ -5828,7 +5828,7 @@ ul.progress-list li  .progress{
 }
 .table-bordered th{
 	background-color:#ecf0f2;
-   border:0 !important;
+   /*border:0 !important;*/
 }
 .table-bordered td{
 	 border: 1px solid #E8EDF1 !important;
@@ -13371,7 +13371,7 @@ ul.progress-list li  .progress{
 }
 .table-bordered th{
 	background-color:#ecf0f2;
-   border:0 !important;
+   /*border:0 !important;*/
 }
 .table-bordered td{
 	 border: 1px solid #E8EDF1 !important;
@@ -15322,4 +15322,14 @@ input[type="file"] {
     display: inline-block;
     padding: 6px 12px;
     cursor: pointer;
+}
+
+.rot-neg-90 {
+    -moz-transform:rotate(-270deg); 
+    -moz-transform-origin: bottom left;
+    -webkit-transform: rotate(-270deg);
+    -webkit-transform-origin: bottom left;
+    -o-transform: rotate(-270deg);
+    -o-transform-origin:  bottom left;
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
 }

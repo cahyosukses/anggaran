@@ -55,4 +55,9 @@ class Config extends REST_Controller {
         $data = $this->m_config->aktivasi_tahun_anggaran($this->get('id'));
         $this->response($data, 200);
     }
+    
+    function change_password_post() {
+        $data = $this->m_config->change_password();
+        die(json_encode($data));
+    }
 }

@@ -3,22 +3,33 @@
     $(function() {
         
         get_list_penerimaan_bank(1);
-        $('#add_penerimaan_bank').click(function() {
-            reset_form();
+        $('#cari_button').click(function() {
             $('#datamodal').modal('show');
-            $('#datamodal h4.modal-title').html('Tambah Transaksi Bank');
-            //tinyMCE.activeEditor.setContent('');
+            $('#datamodal h4.modal-title').html('Pencarian Transaksi Bank');
         });
         
         $('#tanggal').datepicker({
-                format: 'dd/mm/yyyy'
+            format: "yyyy-mm",
+            startView: "months", 
+            minViewMode: "months"
         }).on('changeDate', function(){
             $(this).datepicker('hide');
+            load_data_rencana($(this).val());
         });
 
         $('#reload_penerimaan_bank').click(function() {
             reset_form();
             get_list_penerimaan_bank(1);
+        });
+        
+        $('#cetak').click(function() {
+            var wWidth = $(window).width();
+            var dWidth = wWidth * 1;
+            var wHeight= $(window).height();
+            var dHeight= wHeight * 1;
+            var x = screen.width/2 - dWidth/2;
+            var y = screen.height/2 - dHeight/2;
+            window.open('<?= base_url('laporan/print_rekap_bank/') ?>?'+$('#formsearch').serialize(),'Cetak Transaksi BANK','width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
         });
         
         $('#parent_code').select2({
@@ -52,12 +63,12 @@
     });
     
     function get_list_penerimaan_bank(p, id) {
-        $('#form-pencarian').modal('hide');
+        $('#datamodal').modal('hide');
         var id = '';
         $.ajax({
             type : 'GET',
             url: '<?= base_url("api/transaksi/penerimaan_banks") ?>/page/'+p+'/id/'+id,
-            data: '',
+            data: $('#formsearch').serialize(),
             cache: false,
             dataType: 'json',
             beforeSend: function() {
@@ -113,18 +124,18 @@
     
     function print_bank(id) {
         var wWidth = $(window).width();
-            var dWidth = wWidth * 1;
-            var wHeight= $(window).height();
-            var dHeight= wHeight * 1;
-            var x = screen.width/2 - dWidth/2;
-            var y = screen.height/2 - dHeight/2;
-            window.open('<?= base_url('transaksi/print_bank/') ?>?id='+id,'Cetak Transaksi BANK','width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
+        var dWidth = wWidth * 1;
+        var wHeight= $(window).height();
+        var dHeight= wHeight * 1;
+        var x = screen.width/2 - dWidth/2;
+        var y = screen.height/2 - dHeight/2;
+        window.open('<?= base_url('transaksi/print_bank/') ?>?id='+id,'Cetak Transaksi BANK','width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
     }
 
     function reset_form() {
         $('input, select, textarea').val('');
         $('input[type=checkbox], input[type=radio]').removeAttr('checked');
-        $('#tanggal').val('<?= date("d/m/Y") ?>');
+        $('#tanggal').val('<?= date("Y-m") ?>');
     }
 
     function edit_penerimaan_bank(id) {
@@ -150,98 +161,6 @@
         get_list_penerimaan_bank(p);
     }
 
-    function konfirmasi_save() {
-        //$('#isi_penerimaan_bank').val(tinyMCE.get('isi').getContent());
-        bootbox.dialog({
-            message: "Anda yakin akan menyimpan data ini?",
-            title: "Konfirmasi Simpan",
-            buttons: {
-              batal: {
-                label: '<i class="fa fa-times-circle"></i> Tidak',
-                className: "btn-default",
-                callback: function() {
-
-                }
-              },
-              ya: {
-                label: '<i class="fa fa-save"></i>  Ya',
-                className: "btn-primary",
-                callback: function() {
-                    save_penerimaan_bank();
-                }
-              }
-            }
-          });
-      }
-
-    function save_penerimaan_bank() {
-        $.ajax({
-            type: 'POST',
-            url: '<?= base_url('api/transaksi/penerimaan_bank') ?>',
-            dataType: 'json',
-            data: $('#formadd').serialize(),
-            beforeSend: function() {
-                show_ajax_indicator();
-            },
-            success: function(msg) {
-                var page = $('.pagination .active a').html();
-                hide_ajax_indicator();
-                $('#judul, #isi, #nominal').val('');
-                //reset_form();
-                if (msg.act === 'add') {
-                    $('#datamodal').modal('hide');
-                    message_add_success();
-                    get_list_penerimaan_bank(1);
-                } else {
-                    $('#datamodal').modal('hide');
-                    message_edit_success();
-                    get_list_penerimaan_bank(page);
-                }
-            },
-            error: function() {
-                $('#datamodal').modal('hide');
-                var page = $('.pagination .active a').html();
-                get_list_penerimaan_bank(page);
-                hide_ajax_indicator();
-            }
-        });
-    }
-
-    function delete_penerimaan_bank(id, page) {
-        bootbox.dialog({
-            message: "Anda yakin akan menghapus data ini?",
-            title: "Konfirmasi Hapus",
-            buttons: {
-              batal: {
-                label: '<i class="fa fa-times-circle"></i> Tidak',
-                className: "btn-default",
-                callback: function() {
-
-                }
-              },
-              ya: {
-                label: '<i class="fa fa-trash"></i>  Ya',
-                className: "btn-primary",
-                callback: function() {
-                    $.ajax({
-                        type: 'DELETE',
-                        url: '<?= base_url('api/transaksi/penerimaan_bank') ?>/id/'+id,
-                        dataType: 'json',
-                        success: function(data) {
-                            message_delete_success();
-                            get_list_penerimaan_bank(page);
-                        }
-                    });
-                }
-              }
-            }
-        });
-    }
-
-    function paging(page, tab, search) {
-        get_list_penerimaan_bank(page, search);
-    }
-
 </script>
     <div class="content">
       <ul class="breadcrumb">
@@ -258,6 +177,7 @@
                 <div class="tools"> 
                     <!--<button id="add_penerimaan_bank" class="btn btn-info btn-mini"><i class="fa fa-plus-circle"></i> Tambah</button>-->
                     <button id="cari_button" class="btn btn-mini"><i class="fa fa-search"></i> Cari</button>
+                    <button id="cetak" type="button" class="btn btn-mini"><i class="fa fa-print"></i> Cetak</button>
                     <button id="reload_penerimaan_bank" class="btn btn-mini"><i class="fa fa-refresh"></i> Reload</button>
                 </div>
             </div>
@@ -295,11 +215,11 @@
               <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body">
-                <form id="formadd" method="post" role="form">
+                <form id="formsearch" method="post" role="form">
                 <input type="hidden" name="id" id="id" />
                 <div class="form-group">
-                    <label class="control-label">Tanggal:</label>
-                    <input type="text" name="tanggal" class="form-control" style="width: 145px;" id="tanggal" value="<?= date("d/m/Y") ?>" />
+                    <label class="control-label">Bulan:</label>
+                    <input type="text" name="tanggal" class="form-control" style="width: 145px;" id="tanggal" value="<?= date("Y-m") ?>" />
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="control-label">No. Kode:</label>
@@ -310,13 +230,17 @@
                     <input type="text" name="nobukti"  class="form-control" id="nobukti" maxlength="10">
                 </div>
                 <div class="form-group">
+                    <label for="recipient-name" class="control-label">Uraian:</label>
+                    <textarea name="uraian" class="form-control" id="uraian"></textarea>
+                </div>
+                <div class="form-group">
                     <label for="recipient-name" class="control-label">Jumlah:</label>
                     <input type="text" name="nominal"  class="form-control" onkeyup="FormNum(this);" id="nominal">
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="control-label">Jenis Transaksi:</label>
                     <select name="jenis_transaksi" id="jenis_transaksi" class="form-control">
-                        <option value="">Pilih ...</option>
+                        <option value="">Semua ...</option>
                         <option value="Penerimaan">Penerimaan</option>
                         <option value="Penarikan">Penarikan</option>
                     </select>
@@ -325,7 +249,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-refresh"></i> Batal</button>
-              <button type="button" class="btn btn-primary" onclick="konfirmasi_save();"><i class="fa fa-save"></i> Simpan</button>
+              <button type="button" class="btn btn-primary" onclick="get_list_penerimaan_bank(1);"><i class="fa fa-eye"></i> Tampilkan</button>
             </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

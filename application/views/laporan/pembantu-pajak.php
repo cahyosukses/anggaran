@@ -2,10 +2,11 @@
 <script type="text/javascript">
     $(function() {
         
-        get_list_kas_umum(1);
+        get_list_penerimaan_pajak(1);
         $('#cari_button').click(function() {
             $('#datamodal').modal('show');
-            $('#datamodal h4.modal-title').html('Pencarian Transaksi Bank');
+            $('#datamodal h4.modal-title').html('Pencarian Transaksi Pajak');
+            //tinyMCE.activeEditor.setContent('');
         });
         
         $('#tanggal').datepicker({
@@ -17,9 +18,9 @@
             load_data_rencana($(this).val());
         });
 
-        $('#reload_kas_umum').click(function() {
+        $('#reload_penerimaan_pajak').click(function() {
             reset_form();
-            get_list_kas_umum(1);
+            get_list_penerimaan_pajak(1);
         });
         
         $('#cetak').click(function() {
@@ -29,45 +30,16 @@
             var dHeight= wHeight * 1;
             var x = screen.width/2 - dWidth/2;
             var y = screen.height/2 - dHeight/2;
-            window.open('<?= base_url('laporan/print_buku_kas_umum/') ?>?'+$('#formsearch').serialize(),'Cetak Transaksi BANK','width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
-        });
-        
-        $('#parent_code').select2({
-            width: '100%',
-            ajax: {
-                url: "<?= base_url('api/masterdata_auto/kas_umum_auto') ?>",
-                dataType: 'json',
-                quietMillis: 100,
-                data: function (term, page) { // page is the one-based page number tracked by Select2
-                    return {
-                        q: term, //search term
-                        page: page, // page number
-                        jenissppb: $('#jenisbarang2').val()
-                    };
-                },
-                results: function (data, page) {
-                    var more = (page * 20) < data.total; // whether or not there are more results available
-         
-                    // notice we return the value of more so Select2 knows if more results can be loaded
-                    return {results: data.data, more: more};
-                }
-            },
-            formatResult: function(data){
-                var markup = data.kode+' - '+data.nama_program;
-                return markup;
-            }, 
-            formatSelection: function(data){
-                return data.kode+' - '+data.nama_program;
-            }
+            window.open('<?= base_url('laporan/print_rekap_pajak/') ?>?'+$('#formsearch').serialize(),'Cetak Transaksi BANK','width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
         });
     });
     
-    function get_list_kas_umum(p, id) {
+    function get_list_penerimaan_pajak(p, id) {
         $('#datamodal').modal('hide');
         var id = '';
         $.ajax({
             type : 'GET',
-            url: '<?= base_url("api/laporan/kas_umums") ?>/page/'+p+'/id/'+id,
+            url: '<?= base_url("api/transaksi/penerimaan_pajaks") ?>/page/'+p+'/id/'+id,
             data: $('#formsearch').serialize(),
             cache: false,
             dataType: 'json',
@@ -77,7 +49,7 @@
             },
             success: function(data) {
                 if ((p > 1) & (data.data.length === 0)) {
-                    get_list_kas_umum(p-1);
+                    get_list_penerimaan_pajak(p-1);
                     return false;
                 };
 
@@ -93,20 +65,37 @@
                     if ((i % 2) === 1) {
                         highlight = 'even';
                     };
-                    if (v.keluar === 'Tidak') {
-                        saldo += parseFloat(v.nominal);
+                    var ppn = ''; var pph21 = ''; var pph22 = ''; var pph23 = ''; var pengeluaran = '';
+                    if (v.jenis_transaksi === 'Penerimaan') {
+                        if (v.jenis_pajak === 'PPN') {
+                            ppn = v.hasil_pajak;
+                        }
+                        if (v.jenis_pajak === 'PPh21') {
+                            pph21 = v.hasil_pajak;
+                        }
+                        if (v.jenis_pajak === 'PPh22') {
+                            pph22 = v.hasil_pajak;
+                        }
+                        if (v.jenis_pajak === 'PPh23') {
+                            pph23 = v.hasil_pajak;
+                        }
+                        saldo += parseFloat(v.hasil_pajak);
+                    } else {
+                        pengeluaran = v.hasil_pajak;
+                        saldo -= parseFloat(v.hasil_pajak);
                     }
-                    if (v.keluar === 'Ya') {
-                        saldo -= parseFloat(v.nominal);
-                    }
+                    
                     str+= '<tr data-tt-id='+i+' class="'+highlight+'">'+
                             '<td align="center">'+((i+1) + ((data.page - 1) * data.limit))+'</td>'+
                             '<td align="center">'+datefmysql(v.tanggal)+'</td>'+
-                            '<td>'+v.kode+'</td>'+
+                            '<td>'+v.kode_akun_pajak+'</td>'+
                             '<td>'+v.no_bukti+'</td>'+
                             '<td>'+v.uraian+'</td>'+
-                            '<td align="right">'+((v.keluar === 'Tidak')?numberToCurrency(v.nominal):'')+'</td>'+
-                            '<td align="right">'+((v.keluar === 'Ya')?numberToCurrency(v.nominal):'')+'</td>'+
+                            '<td align="right">'+numberToCurrency(ppn)+'</td>'+
+                            '<td align="right">'+numberToCurrency(pph21)+'</td>'+
+                            '<td align="right">'+numberToCurrency(pph22)+'</td>'+
+                            '<td align="right">'+numberToCurrency(pph23)+'</td>'+
+                            '<td align="right">'+numberToCurrency(pengeluaran)+'</td>'+
                             '<td align="right">'+numberToCurrency(saldo)+'</td>'+
                         '</tr>';
                     $('#example-advanced tbody').append(str);
@@ -122,43 +111,24 @@
         });
     }
     
-    function print_bank(id) {
+    function print_pajak(id) {
         var wWidth = $(window).width();
         var dWidth = wWidth * 1;
         var wHeight= $(window).height();
         var dHeight= wHeight * 1;
         var x = screen.width/2 - dWidth/2;
         var y = screen.height/2 - dHeight/2;
-        window.open('<?= base_url('transaksi/print_bank/') ?>?id='+id,'Cetak Transaksi BANK','width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
+        window.open('<?= base_url('transaksi/print_pajak/') ?>?id='+id,'Cetak Transaksi Pajak','width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
     }
 
     function reset_form() {
         $('input, select, textarea').val('');
         $('input[type=checkbox], input[type=radio]').removeAttr('checked');
-        $('#tanggal').val('<?= date("Y-m") ?>');
-    }
-
-    function edit_kas_umum(id) {
-        $('#oldpict').html('');
-        $('#datamodal').modal('show');
-        $('#datamodal h4.modal-title').html('Edit Transaksi Bank');
-        $.ajax({
-            type: 'GET',
-            url: '<?= base_url('api/transaksi/kas_umums') ?>/page/1/id/'+id,
-            dataType: 'json',
-            success: function(data) {
-                $('#id').val(data.data[0].id);
-                $('#tanggal').val(datefmysql(data.data[0].tanggal));
-                $('#nokode').val(data.data[0].kode);
-                $('#nobukti').val(data.data[0].nobukti);
-                $('#nominal').val(numberToCurrency(data.data[0].nominal));
-                $('#jenis_transaksi').val(data.data[0].jenis);
-            }
-        });
+        $('#tanggal').val('<?= date("d/m/Y") ?>');
     }
         
     function paging(p) {
-        get_list_kas_umum(p);
+        get_list_penerimaan_pajak(p);
     }
 
 </script>
@@ -175,10 +145,10 @@
             <div class="grid-title">
               <h4>Daftar List <?= $title ?></h4>
                 <div class="tools"> 
-                    <!--<button id="add_kas_umum" class="btn btn-info btn-mini"><i class="fa fa-plus-circle"></i> Tambah</button>-->
-                    <!--<button id="cari_button" class="btn btn-mini"><i class="fa fa-search"></i> Cari</button>-->
+                    <!--<button id="add_penerimaan_pajak" class="btn btn-info btn-mini"><i class="fa fa-plus-circle"></i> Tambah</button>-->
+                    <button id="cari_button" class="btn btn-mini"><i class="fa fa-search"></i> Cari</button>
                     <button id="cetak" type="button" class="btn btn-mini"><i class="fa fa-print"></i> Cetak</button>
-                    <button id="reload_kas_umum" class="btn btn-mini"><i class="fa fa-refresh"></i> Reload</button>
+                    <button id="reload_penerimaan_pajak" class="btn btn-mini"><i class="fa fa-refresh"></i> Reload</button>
                 </div>
             </div>
             <div class="grid-body">
@@ -187,14 +157,20 @@
                     <table class="table table-bordered table-stripped table-hover tabel-advance" id="example-advanced">
                         <thead>
                         <tr>
-                          <th width="3%">No</th>
-                          <th width="7%">Tanggal</th>
-                          <th width="10%" class="left">No. Kode</th>
-                          <th width="10%" class="left">No. Bukti</th>
-                          <th width="37%" class="right">Uraian</th>
-                          <th width="10%" class="right">Penerimaan&nbsp;(D)</th>
-                          <th width="10%" class="right">Pengeluaran&nbsp;(K)</th>
-                          <th width="10%" class="right">Saldo</th>
+                            <th width="3%" rowspan="2">No</th>
+                            <th width="7%" rowspan="2">Tanggal</th>
+                            <th width="7%" class="left" rowspan="2">No. Kode</th>
+                            <th width="7%" class="left" rowspan="2">No. Bukti</th>
+                            <th width="30%" class="left" rowspan="2">Uraian</th>
+                            <th width="28%" colspan="4">Penerimaan (D)</th>
+                            <th width="7%" class="right" rowspan="2">Pengeluaran (K)</th>
+                            <th width="7%" class="right" rowspan="2">Saldo</th>
+                        </tr>
+                        <tr>
+                            <th width="7%" class="right">PPN</th>
+                            <th width="7%" class="right">PPh21</th>
+                            <th width="7%" class="right">PPh22</th>
+                            <th width="7%" class="right">PPh23</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -218,38 +194,44 @@
                 <form id="formsearch" method="post" role="form">
                 <input type="hidden" name="id" id="id" />
                 <div class="form-group">
-                    <label class="control-label">Bulan:</label>
+                    <label class="control-label">Tanggal:</label>
                     <input type="text" name="tanggal" class="form-control" style="width: 145px;" id="tanggal" value="<?= date("Y-m") ?>" />
                 </div>
                 <div class="form-group">
-                    <label for="recipient-name" class="control-label">No. Kode:</label>
-                    <input type="text" name="nokode"  class="form-control" id="nokode" maxlength="10">
+                    <label for="recipient-name" class="control-label">No. Kode Akun Pajak:</label>
+                    <input type="text" name="nokode"  class="form-control" id="nokode">
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="control-label">No. Bukti:</label>
-                    <input type="text" name="nobukti"  class="form-control" id="nobukti" maxlength="10">
+                    <input type="text" name="nobukti"  class="form-control" id="nobukti">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">Jenis Transaksi:</label>
+                    <select name="jenis_transaksi" id="jenis_transaksi" class="form-control">
+                        <option value="">Pilih ...</option>
+                        <option value="Penerimaan">Penerimaan</option>
+                        <option value="Setoran">Setoran</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="control-label">Uraian:</label>
                     <textarea name="uraian" class="form-control" id="uraian"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="recipient-name" class="control-label">Jumlah:</label>
-                    <input type="text" name="nominal"  class="form-control" onkeyup="FormNum(this);" id="nominal">
-                </div>
-                <div class="form-group">
-                    <label for="recipient-name" class="control-label">Jenis Transaksi:</label>
-                    <select name="jenis_transaksi" id="jenis_transaksi" class="form-control">
-                        <option value="">Semua ...</option>
-                        <option value="Penerimaan">Penerimaan</option>
-                        <option value="Penarikan">Penarikan</option>
+                    <label for="recipient-name" class="control-label">Jenis Pajak:</label>
+                    <select name="jenis_pajak" id="jenis_pajak" class="form-control" onchange="hitungPajak();">
+                        <option value="">Pilih ...</option>
+                        <option value="PPN">PPN</option>
+                        <option value="PPh21">PPh21</option>
+                        <option value="PPh22">PPh22</option>
+                        <option value="PPh23">PPh23</option>
                     </select>
                 </div>
             </form>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-refresh"></i> Batal</button>
-              <button type="button" class="btn btn-primary" onclick="get_list_kas_umum(1);"><i class="fa fa-eye"></i> Tampilkan</button>
+              <button type="button" class="btn btn-primary" onclick="get_list_penerimaan_pajak(1);"><i class="fa fa-eye"></i> Tampilkan</button>
             </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

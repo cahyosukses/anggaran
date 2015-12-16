@@ -297,7 +297,7 @@ function tampil_bulan($tgl) {
     if ($tgl[1] == '12')
         $mo = "Desember";
 
-    return $mo;
+    return $mo.' '.$tgl[0];
 }
 
 function datetopg($tgl) {

@@ -394,7 +394,11 @@ function numberToCurrency(a){
                         c += ',';
                 }
         }
-        return c;
+        if (parseFloat(a) < 0) {
+            return '-'+c;
+        } else {
+            return c;
+        }
     } else {
         return '0';
     }

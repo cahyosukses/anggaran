@@ -10,7 +10,7 @@
             //tinyMCE.activeEditor.setContent('');
         });
         
-        $('#tanggal').datepicker({
+        $('#tanggal, #tanggal_kegiatan').datepicker({
                 format: 'dd/mm/yyyy'
         }).on('changeDate', function(){
             $(this).datepicker('hide');
@@ -156,7 +156,8 @@
     function reset_form() {
         $('input, select, textarea').val('');
         $('input[type=checkbox], input[type=radio]').removeAttr('checked');
-        $('#tanggal').val('<?= date("d/m/Y") ?>');
+        $('a .select2-chosen').html('');
+        $('#tanggal, #tanggal_kegiatan').val('<?= date("d/m/Y") ?>');
     }
 
     function edit_pencairan(id) {
@@ -170,11 +171,15 @@
             success: function(data) {
                 $('#id').val(data.data[0].id);
                 $('#tanggal').val(datefmysql(data.data[0].tanggal));
-                $('#nourut').val(data.data[0].nourut);
+                $('#tanggal_kegiatan').val(datefmysql(data.data[0].tanggal_kegiatan));
+                $('#nourut').val(data.data[0].id_parent);
+                $('#s2id_nourut a .select2-chosen').html(data.data[0].parent_program);
                 $('#nokode').val(data.data[0].id_rka);
                 $('#nobukti').val(data.data[0].no_bukti);
-                $('#s2id_nokode a .select2-chosen').html(data.data[0].kode);
+                $('#s2id_nokode a .select2-chosen').html(data.data[0].kode+' '+data.data[0].nama_program);
                 $('#uraian').val(data.data[0].uraian);
+                $('#satuan').val(data.data[0].satuan);
+                $('#volume').val(data.data[0].volume);
                 $('#nominal').val(numberToCurrency(data.data[0].nominal));
                 $('#penerima').val(data.data[0].penerima);
             }
@@ -334,8 +339,12 @@
                 <form id="formadd" method="post" role="form">
                 <input type="hidden" name="id" id="id" />
                 <div class="form-group">
-                    <label class="control-label">Tanggal:</label>
+                    <label class="control-label">Tanggal Pencairan:</label>
                     <input type="text" name="tanggal" class="form-control" style="width: 145px;" id="tanggal" value="<?= date("d/m/Y") ?>" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Tanggal Kegiatan:</label>
+                    <input type="text" name="tanggal_kegiatan" class="form-control" style="width: 145px;" id="tanggal_kegiatan" value="<?= date("d/m/Y") ?>" />
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="control-label">No. Urut:</label>
@@ -350,8 +359,16 @@
                     <input type="text" name="nobukti"  class="form-control" id="nobukti" maxlength="10">
                 </div>
                 <div class="form-group">
-                    <label for="recipient-name" class="control-label">Uraian:</label>
+                    <label for="recipient-name" class="control-label">Uraian <i>Memorial</i>:</label>
                     <textarea name="uraian" class="form-control" id="uraian"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">Satuan</label>
+                    <input type="text" name="satuan"  class="form-control" id="satuan" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">Volume:</label>
+                    <input type="text" name="volume"  class="form-control" id="volume" maxlength="10">
                 </div>
                 <div class="form-group">
                     <label for="recipient-name" class="control-label">Jumlah:</label>
