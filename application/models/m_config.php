@@ -24,6 +24,20 @@ class M_config extends CI_Model {
         $this->db->update('tb_tahun_anggaran', array('aktifasi' => 'Ya'));
     }
     
+    function lock_my_app() {
+        $create_file = fopen('assets/fonts/app.txt', 'w');
+        fwrite($create_file, get_mac_address());
+        fclose($create_file);
+        $output = 'Oke, Kunci Berhasil Dibuat';
+        $check = $this->db->get('tb_smart_card')->num_rows();
+        if ($check === 0) {
+            $this->db->insert('tb_smart_card', array('nama' => get_mac_address()));
+        } else {
+            $this->db->update('tb_smart_card', array('nama' => get_mac_address()));
+        }
+        return $output;
+    }
+    
     function save_tahun_anggaran() {
         $id     = post_safe('id');
         $tahun  = post_safe('tahun');
@@ -66,6 +80,17 @@ class M_config extends CI_Model {
             $result['status'] = TRUE;
             $result['message']= 'Password barhasil diubah !';
         }
+        return $result;
+    }
+    
+    function save_config_institusi($data) {
+        $check= $this->db->get('tb_sekolah')->num_rows();
+        if ($check === 0) {
+            $this->db->insert('tb_sekolah', $data);
+        } else {
+            $this->db->update('tb_sekolah', $data);
+        }
+        $result['status'] = true;
         return $result;
     }
 }

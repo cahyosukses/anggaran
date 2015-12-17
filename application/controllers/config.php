@@ -16,4 +16,9 @@ class Config extends CI_Controller {
         $data['title'] = 'Ubah Password';
         $this->load->view('config/changepass', $data);
     }
+    
+    function institusi() {
+        $data['title'] = 'Institusi';
+        $this->load->view('config/institusi', $data);
+    }
 }

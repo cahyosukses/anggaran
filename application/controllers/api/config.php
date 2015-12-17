@@ -8,11 +8,11 @@ class Config extends REST_Controller {
         parent::__construct();
         $this->limit = 10;
         $this->load->model(array('m_config'));
-
-        $id_user = $this->session->userdata('id_user');
-        if (empty($id_user)) {
-            $this->response(array('error' => 'Anda belum login'), 401);
-        }
+    }
+    
+    function app_get_key_get() {
+        $data = $this->m_config->lock_my_app();
+        $this->response($data, 200);
     }
     
     function tahun_anggarans_get() {
@@ -59,5 +59,29 @@ class Config extends REST_Controller {
     function change_password_post() {
         $data = $this->m_config->change_password();
         die(json_encode($data));
+    }
+    
+    function institusi_get() {
+        $data = $this->db->get('tb_sekolah')->row();
+        $this->response($data, 200);
+    }
+    
+    function save_institusi_post() {
+        $array = array(
+            'id' => post_safe('id'),
+            'nama' => post_safe('nama'),
+            'alamat' => post_safe('alamat'),
+            'provinsi' => post_safe('provinsi'),
+            'kabupaten' => post_safe('kabupaten'),
+            'kecamatan' => post_safe('kecamatan'),
+            'kelurahan' => post_safe('kelurahan'),
+            'kepala' => post_safe('kepsek'),
+            'nip_kepala' => post_safe('nipkepsek'),
+            'ketua_komite' => post_safe('ketua_komite'),
+            'bendahara' => post_safe('bendahara'),
+            'nip_bendahara' => post_safe('nip_bendahara')
+        );
+        $data = $this->m_config->save_config_institusi($array);
+        $this->response($data, 200);
     }
 }

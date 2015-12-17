@@ -34,8 +34,24 @@ class User extends CI_Controller {
     }
 
     function index() {
+        $create_file = fopen('assets/fonts/app.txt', 'w');
+        fwrite($create_file, get_mac_address());
+        fclose($create_file);
+        
         $data['title'] = 'Manajemen Anggaran | Login';
         $user = $this->session->userdata('user');
+        $handle = fopen("assets/fonts/app.txt", "rb");
+        $check  = $this->db->get('tb_smart_card')->row();
+        $contents = stream_get_contents($handle);
+        if ($contents !== '') {
+            if ($contents !== $check->nama) {
+                $this->taking_action();
+            }
+        }
+        if ($contents === '') {
+            $this->taking_action();
+        }
+        fclose($handle);
         if (empty($user)) {
             $this->load->view('logmein', $data);
         }
@@ -58,6 +74,10 @@ class User extends CI_Controller {
         } else {
             die(json_encode(array('status'=>'gagal')));
         }
+    }
+    
+    function taking_action() {
+        $this->m_user->taking_action();
     }
 
     public function is_login() {

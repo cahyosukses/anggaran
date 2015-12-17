@@ -332,6 +332,7 @@
         <li class=" "> <a href="javascript:;;"> <i class="fa fa-wrench"></i> <span class="title">Konfigurasi</span> <span class="selected"></span> <span class="arrow "></span></a> 
             <ul class="sub-menu">
                 <li> <a onclick="load_menu('<?= base_url('config/tahun_anggaran') ?>'); return false;" href="<?= base_url('') ?>"> Tahun Anggaran </a> </li>
+                <li> <a onclick="load_menu('<?= base_url('config/institusi') ?>'); return false;" href="<?= base_url('') ?>"> Atribut Institusi </a> </li>
                 <li> <a onclick="load_menu('<?= base_url('config/changepassword') ?>'); return false;" href="<?= base_url('') ?>"> Ubah Password </a> </li>
             </ul>
         </li>

