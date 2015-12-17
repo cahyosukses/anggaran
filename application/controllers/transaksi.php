@@ -19,7 +19,14 @@ class Transaksi extends CI_Controller {
     }
     
     function print_pencairan() {
-        $search['id'] = get_safe('id');
+        $search = array(
+            'id' => get_safe('id'),
+            'awal' => '',
+            'akhir' => '',
+            'nobukti' => '',
+            'nokode' => '',
+            'nourut' =>''
+        );
         $data = $this->m_transaksi->get_list_pencairans(NULL, NULL, $search);
         $data['thn_agg'] = $this->m_laporan->data_tahun_anggaran_aktif();
         $data['attr']  = $this->m_laporan->data_header();
@@ -27,7 +34,15 @@ class Transaksi extends CI_Controller {
     }
     
     function print_bank() {
-        $search['id'] = get_safe('id');
+        $search = array(
+            'id' => get_safe('id'),
+            'tanggal' => '',
+            'kode' => '',
+            'nobukti' => '',
+            'keterangan' => '',
+            'nominal' => '',
+            'jenis' => ''
+        );
         $data = $this->m_transaksi->get_list_penerimaan_banks(NULL, NULL, $search);
         $data['thn_agg'] = $this->m_laporan->data_tahun_anggaran_aktif();
         $data['attr']  = $this->m_laporan->data_header();
@@ -35,7 +50,15 @@ class Transaksi extends CI_Controller {
     }
     
     function print_pajak() {
-        $search['id'] = get_safe('id');
+        $search = array(
+            'id' => get_safe('id'),
+            'tanggal' => '',
+            'kode' => '',
+            'nobukti' => '',
+            'keterangan' => '',
+            'jenis_pajak' => '',
+            'jenis' => ''
+        );
         $data = $this->m_transaksi->get_list_penerimaan_pajaks(NULL, NULL, $search);
         $data['thn_agg'] = $this->m_laporan->data_tahun_anggaran_aktif();
         $data['attr']  = $this->m_laporan->data_header();
