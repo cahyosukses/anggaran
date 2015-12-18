@@ -336,7 +336,7 @@
                 <li> <a onclick="load_menu('<?= base_url('config/changepassword') ?>'); return false;" href="<?= base_url('') ?>"> Ubah Password </a> </li>
             </ul>
         </li>
-        <li class=" "> <a href="javascript:;;"> <i class="fa fa-windows"></i> <span class="title">Masterdata<br/><small>Represents the business objects which are agreed on and shared across the enterprise</small></span> <span class="selected"></span> <span class="arrow "></span></a> 
+        <li class=" "> <a href="javascript:;;"> <i class="fa fa-windows"></i> <span class="title">Masterdata<br/><small>Represents the business objects which are agreed</small></span> <span class="selected"></span> <span class="arrow "></span></a> 
             <ul class="sub-menu">
                 <li> <a onclick="load_menu('<?= base_url('masterdata/rka') ?>'); return false;" href="<?= base_url('') ?>"> RKAM </a> </li>
                 <li> <a onclick="load_menu('<?= base_url('masterdata/penerimaan') ?>'); return false;" href="<?= base_url('') ?>"> Penerimaan </a> </li>
