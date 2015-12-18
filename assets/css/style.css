@@ -375,7 +375,7 @@ Page sidebar
 .page-sidebar > ul > li.open > a, 
 .page-sidebar > ul > li >a:hover, 
 .page-sidebar > ul > li:hover >a {  
-  background: #1b1e24;
+  background: #00772d;
  /* border-left:4px solid  #0aa699;*/
   padding:11.5px 31px;
   color: #fff;
@@ -8994,7 +8994,7 @@ span.iconset{
   list-style: none;
   clear: both;
   margin:0px;
-  background-color:#22262E;
+  background-color:#00A539;
   padding:8px 0px 10px 0px;
 
 }

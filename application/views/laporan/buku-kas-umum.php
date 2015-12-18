@@ -184,7 +184,7 @@
                     <button id="excel_button" class="btn btn-mini"><i class="fa fa-search"></i> Export Excel</button>
                     <button id="cetak" type="button" class="btn btn-mini"><i class="fa fa-print"></i> Cetak</button>
                     <button id="reload_kas_umum" class="btn btn-mini"><i class="fa fa-refresh"></i> Reload</button>
-                    #00A539
+                    
                 </div>
             </div>
             <div class="grid-body">

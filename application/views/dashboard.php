@@ -329,27 +329,27 @@
     <ul>	
         
         <li class="start active "> <a class="home" href="<?= base_url('user') ?>"> <i class="icon-custom-home"></i> <span class="title">Dashboard<br/><small>Beranda sistem informasi</small></span> <span class="selected"></span> <span class="badge badge-important pull-right">2</span></a> </li>
-        <li class=" "> <a href="javascript:;;"> <i class="fa fa-gear"></i> <span class="title">Konfigurasi<br/><small>Manajemen Data Privileges, User Account, Ubah Password</small></span> <span class="selected"></span> <span class="arrow "></span></a> 
+        <li class=" "> <a href="javascript:;;"> <i class="fa fa-gear"></i> <span class="title">Konfigurasi<br/><small>Manajemen Setting TA, Ubah Password</small></span> <span class="selected"></span> <span class="arrow "></span></a> 
             <ul class="sub-menu">
                 <li> <a onclick="load_menu('<?= base_url('config/tahun_anggaran') ?>'); return false;" href="<?= base_url('') ?>"> Tahun Anggaran </a> </li>
                 <li> <a onclick="load_menu('<?= base_url('config/institusi') ?>'); return false;" href="<?= base_url('') ?>"> Atribut Institusi </a> </li>
                 <li> <a onclick="load_menu('<?= base_url('config/changepassword') ?>'); return false;" href="<?= base_url('') ?>"> Ubah Password </a> </li>
             </ul>
         </li>
-        <li class=" "> <a href="javascript:;;"> <i class="fa fa-windows"></i> <span class="title">Masterdata<br/><small>Represents the business objects which are agreed</small></span> <span class="selected"></span> <span class="arrow "></span></a> 
+        <li class=" "> <a href="javascript:;;"> <i class="fa fa-windows"></i> <span class="title">Masterdata<br/><small>Represents the business objects</small></span> <span class="selected"></span> <span class="arrow "></span></a> 
             <ul class="sub-menu">
                 <li> <a onclick="load_menu('<?= base_url('masterdata/rka') ?>'); return false;" href="<?= base_url('') ?>"> RKAM </a> </li>
                 <li> <a onclick="load_menu('<?= base_url('masterdata/penerimaan') ?>'); return false;" href="<?= base_url('') ?>"> Penerimaan </a> </li>
             </ul>
         </li>
-        <li class=" "> <a href="javascript:;;"> <i class="fa fa-graduation-cap"></i> <span class="title">Transaksi<br/><small>Information processing system for business transactions</small></span> <span class="selected"></span> <span class="arrow "></span></a> 
+        <li class=" "> <a href="javascript:;;"> <i class="fa fa-graduation-cap"></i> <span class="title">Transaksi<br/><small>Information processing system</small></span> <span class="selected"></span> <span class="arrow "></span></a> 
             <ul class="sub-menu">
                 <li> <a onclick="load_menu('<?= base_url('transaksi/penerimaan_bank') ?>'); return false;" href="<?= base_url('') ?>"> Transaksi Bank </a> </li>
                 <li> <a onclick="load_menu('<?= base_url('transaksi/penerimaan_pajak') ?>'); return false;" href="<?= base_url('') ?>"> Transaksi Pajak </a> </li>
                 <li> <a onclick="load_menu('<?= base_url('transaksi/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> Pencairan Dana </a> </li>
             </ul>
         </li>
-        <li class=" "> <a href="javascript:;;"> <i class="fa fa-child"></i> <span class="title">Laporan<br/><small>Information organized in a narrative, prepared on ad hoc</small></span> <span class="selected"></span> <span class="arrow "></span></a> 
+        <li class=" "> <a href="javascript:;;"> <i class="fa fa-child"></i> <span class="title">Laporan <br/><small>Containing information organized in a narrative, graphic, or tabular form</small></span> <span class="selected"></span> <span class="arrow "></span></a> 
             <ul class="sub-menu">
                 <li> <a onclick="load_menu('<?= base_url('laporan/buku_kas_umum') ?>'); return false;" href="<?= base_url('') ?>"> Buku Kas Umum (K3) </a> </li>
                 <li> <a onclick="load_menu('<?= base_url('laporan/buku_pembantu_kas') ?>'); return false;" href="<?= base_url('') ?>"> Buku Pembantu Kas (K4)</a> </li>
@@ -361,6 +361,7 @@
         </li>
         
     </ul>
+    <br/><br/><br/>
 	
 	<a href="#" class="scrollup">Scroll</a>
 	<div class="clearfix"></div>

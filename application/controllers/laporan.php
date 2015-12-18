@@ -116,7 +116,12 @@ class Laporan extends CI_Controller {
         $data = $this->m_laporan->get_list_kas_umum(NULL, NULL, $search);
         $data['title'] = 'BUKU KAS UMUM';
         $data['attr']  = $this->m_laporan->data_header();
-        $this->load->view('laporan/print-buku-kas-umum', $data);
+        $display = get_safe('cetak');
+        if ($display === 'printer') {
+            $this->load->view('laporan/print-buku-kas-umum', $data);
+        } else {
+            $this->load->view('laporan/excel/buku-kas-umum', $data);
+        }
     }
     
     function buku_pembantu_kas() {
@@ -138,6 +143,11 @@ class Laporan extends CI_Controller {
         $data = $this->m_laporan->get_list_pembantu_kas(NULL, NULL, $search);
         $data['title'] = 'BUKU PEMBANTU KAS';
         $data['attr']  = $this->m_laporan->data_header();
-        $this->load->view('laporan/print-buku-pembantu-kas', $data);
+        $display = get_safe('cetak');
+        if ($display === 'printer') {
+            $this->load->view('laporan/print-buku-pembantu-kas', $data);
+        } else {
+            $this->load->view('laporan/excel/buku-pembantu-kas', $data);
+        }
     }
 }
