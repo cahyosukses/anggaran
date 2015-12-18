@@ -7787,7 +7787,7 @@ html{
 	height:100%;
 }
 body { 
-  background-color:#1B1E24 ;
+  background-color:#00A539 ;
 }
 
 
@@ -7822,7 +7822,7 @@ Page header
     content: '';
   }
 .header-seperation{
-	background-color:#22262e;
+    background-color: #00772d;
 	
 }
 .header .navbar-inner {
@@ -7858,7 +7858,7 @@ Page header
 Page sidebar
 ***/
 .menu-title{
-	color: #808285;
+	color: #fff;
 	font-size: 10.5px;
 	padding-left: 31px;
 	padding-right: 31px;
@@ -7878,7 +7878,7 @@ Page sidebar
 	font-weight:normal;
 }
 .page-sidebar{
-	background-color:#1b1e24 !important;
+	background-color:#00A539 !important;
 	height:100%;
 	font-family: 'Open Sans';
 }
@@ -7899,7 +7899,7 @@ Page sidebar
 	width:200px;
 }
 .page-sidebar > ul > li > a {
-  color: #8b91a0;
+  color: #fff;
 }
 
 .page-sidebar > ul > li:last-child > a {
@@ -7907,7 +7907,7 @@ Page sidebar
 }
 
 .page-sidebar > ul > li a i {
-     color: #8b91a0;
+     color: #fff;
 	 width: 20px;
 	     text-align: center;
     display: inline-block;
@@ -8128,7 +8128,14 @@ blockquote small{
 	color:#8b91a0;
 }
 .logo{
-	margin:18px 14px;
+	margin:10px 14px;
+        font-size: 25px;
+        font-weight: normal;
+        
+}
+.logo > span {
+    font-size: 25px;
+    font-weight: 600;
 }
 
 .normal{ 
@@ -8663,7 +8670,7 @@ span.iconset{
 }
 
 .header .nav > li.dropdown .active {
-	background-color:#0d0f12;
+	background-color:#00A539;
 }
 .header .nav > li.dropdown .dropdown-toggle i {
   font-size: 15px;
@@ -8910,7 +8917,7 @@ span.iconset{
   display: block;
   margin: 0;
   padding: 0; 
-  border: 0px;
+  border-bottom: 1px dotted #b8fbb8;
 }
 
 .page-sidebar > ul > li.start > a {
@@ -9131,7 +9138,7 @@ span.iconset{
 	bottom:0px;
 	display:block;
 	padding:11px 21px;
-	background-color:#22262e;
+	background-color:#00A539;
 	 width: 250px;
 	clear:both;
 }
@@ -11208,11 +11215,11 @@ form legend,
 }
 .user-info-wrapper .user-info {
 	color:#fff;
-	background-color:#1b1e24;
+	background-color:#00A539;
 	display:inline-block;
 }
 .user-info-wrapper .user-info .status{
-	color:#929fa5;
+	color:#f4f4f4;
 	font-size:13px;
 	margin-bottom:10px;	
 	margin-top: 2px;

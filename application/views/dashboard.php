@@ -164,7 +164,7 @@
 		 <li class="dropdown"> <a id="main-menu-toggle" href="#main-menu"  class="" > <div class="iconset top-menu-toggle-white"></div> </a> </li>		 
 		</ul>
       <!-- BEGIN LOGO -->	
-      <div class="logo">SIABOS</div>
+      <div class="logo">SIA <span>BOS</span></div>
       <!-- END LOGO --> 
       <ul class="nav pull-right notifcation-center">	
           <li class="dropdown" id="header_task_bar"> <a href="<?= base_url('user') ?>" class="dropdown-toggle active" data-toggle=""> <div class="iconset top-home"></div> </a> </li>
@@ -314,7 +314,7 @@
   <!-- BEGIN MINI-PROFILE -->
    <div class="user-info-wrapper">	
 	<div class="profile-wrapper">
-            <img src="<?= base_url('assets/img/profiles/user.png') ?>"  alt="" data-src="<?= base_url('assets/img/profiles/user.png') ?>" data-src-retina="assets/img/profiles/avatar2x.jpg" width="69" height="69" />
+            <img src="<?= base_url('assets/img/profiles/depag.png') ?>"  alt="" data-src="<?= base_url('assets/img/profiles/depag.png') ?>" width="69" height="69" />
 	</div>
     <div class="user-info">
       <div class="greeting">Welcome</div>
@@ -328,28 +328,28 @@
     <p class="menu-title">BROWSE <span class="pull-right"><a href="javascript:;"><i class="fa fa-refresh"></i></a></span></p>
     <ul>	
         
-        <li class="start active "> <a class="home" href="<?= base_url('user') ?>"> <i class="icon-custom-home"></i> <span class="title">Dashboard</span> <span class="selected"></span> <span class="badge badge-important pull-right">2</span></a> </li>
-        <li class=" "> <a href="javascript:;;"> <i class="fa fa-wrench"></i> <span class="title">Konfigurasi</span> <span class="selected"></span> <span class="arrow "></span></a> 
+        <li class="start active "> <a class="home" href="<?= base_url('user') ?>"> <i class="icon-custom-home"></i> <span class="title">Dashboard<br/><small>Beranda sistem informasi</small></span> <span class="selected"></span> <span class="badge badge-important pull-right">2</span></a> </li>
+        <li class=" "> <a href="javascript:;;"> <i class="fa fa-gear"></i> <span class="title">Konfigurasi<br/><small>Manajemen Data Privileges, User Account, Ubah Password</small></span> <span class="selected"></span> <span class="arrow "></span></a> 
             <ul class="sub-menu">
                 <li> <a onclick="load_menu('<?= base_url('config/tahun_anggaran') ?>'); return false;" href="<?= base_url('') ?>"> Tahun Anggaran </a> </li>
                 <li> <a onclick="load_menu('<?= base_url('config/institusi') ?>'); return false;" href="<?= base_url('') ?>"> Atribut Institusi </a> </li>
                 <li> <a onclick="load_menu('<?= base_url('config/changepassword') ?>'); return false;" href="<?= base_url('') ?>"> Ubah Password </a> </li>
             </ul>
         </li>
-        <li class=" "> <a href="javascript:;;"> <i class="fa fa-windows"></i> <span class="title">Masterdata</span> <span class="selected"></span> <span class="arrow "></span></a> 
+        <li class=" "> <a href="javascript:;;"> <i class="fa fa-windows"></i> <span class="title">Masterdata<br/><small>Represents the business objects which are agreed on and shared across the enterprise</small></span> <span class="selected"></span> <span class="arrow "></span></a> 
             <ul class="sub-menu">
                 <li> <a onclick="load_menu('<?= base_url('masterdata/rka') ?>'); return false;" href="<?= base_url('') ?>"> RKAM </a> </li>
                 <li> <a onclick="load_menu('<?= base_url('masterdata/penerimaan') ?>'); return false;" href="<?= base_url('') ?>"> Penerimaan </a> </li>
             </ul>
         </li>
-        <li class=" "> <a href="javascript:;;"> <i class="fa fa-graduation-cap"></i> <span class="title">Transaksi</span> <span class="selected"></span> <span class="arrow "></span></a> 
+        <li class=" "> <a href="javascript:;;"> <i class="fa fa-graduation-cap"></i> <span class="title">Transaksi<br/><small>Information processing system for business transactions</small></span> <span class="selected"></span> <span class="arrow "></span></a> 
             <ul class="sub-menu">
                 <li> <a onclick="load_menu('<?= base_url('transaksi/penerimaan_bank') ?>'); return false;" href="<?= base_url('') ?>"> Transaksi Bank </a> </li>
                 <li> <a onclick="load_menu('<?= base_url('transaksi/penerimaan_pajak') ?>'); return false;" href="<?= base_url('') ?>"> Transaksi Pajak </a> </li>
                 <li> <a onclick="load_menu('<?= base_url('transaksi/pencairan_dana') ?>'); return false;" href="<?= base_url('') ?>"> Pencairan Dana </a> </li>
             </ul>
         </li>
-        <li class=" "> <a href="javascript:;;"> <i class="fa fa-child"></i> <span class="title">Laporan</span> <span class="selected"></span> <span class="arrow "></span></a> 
+        <li class=" "> <a href="javascript:;;"> <i class="fa fa-child"></i> <span class="title">Laporan<br/><small>Information organized in a narrative, prepared on ad hoc</small></span> <span class="selected"></span> <span class="arrow "></span></a> 
             <ul class="sub-menu">
                 <li> <a onclick="load_menu('<?= base_url('laporan/buku_kas_umum') ?>'); return false;" href="<?= base_url('') ?>"> Buku Kas Umum (K3) </a> </li>
                 <li> <a onclick="load_menu('<?= base_url('laporan/buku_pembantu_kas') ?>'); return false;" href="<?= base_url('') ?>"> Buku Pembantu Kas (K4)</a> </li>
@@ -359,7 +359,7 @@
                 <li> <a onclick="load_menu('<?= base_url('laporan/penggunaan_dana_non_personal') ?>'); return false;" href="<?= base_url('') ?>"> Ops Non Personil BOS(K8) </a> </li>
             </ul>
         </li>
-        <li class=" "> &nbsp;</li>
+        
     </ul>
 	
 	<a href="#" class="scrollup">Scroll</a>

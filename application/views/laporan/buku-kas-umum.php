@@ -29,7 +29,11 @@
             var dHeight= wHeight * 1;
             var x = screen.width/2 - dWidth/2;
             var y = screen.height/2 - dHeight/2;
-            window.open('<?= base_url('laporan/print_buku_kas_umum/') ?>?'+$('#formsearch').serialize(),'Cetak Transaksi BANK','width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
+            window.open('<?= base_url('laporan/print_buku_kas_umum/') ?>?'+$('#formsearch').serialize()+'&cetak=printer','Cetak Transaksi BANK','width='+dWidth+', height='+dHeight+', left='+x+',top='+y);
+        });
+        
+        $('#excel_button').click(function() {
+            location.href='<?= base_url('laporan/print_buku_kas_umum/') ?>?'+$('#formsearch').serialize()+'&cetak=excel';
         });
         
         $('#parent_code').select2({
@@ -177,8 +181,10 @@
                 <div class="tools"> 
                     <!--<button id="add_kas_umum" class="btn btn-info btn-mini"><i class="fa fa-plus-circle"></i> Tambah</button>-->
                     <!--<button id="cari_button" class="btn btn-mini"><i class="fa fa-search"></i> Cari</button>-->
+                    <button id="excel_button" class="btn btn-mini"><i class="fa fa-search"></i> Export Excel</button>
                     <button id="cetak" type="button" class="btn btn-mini"><i class="fa fa-print"></i> Cetak</button>
                     <button id="reload_kas_umum" class="btn btn-mini"><i class="fa fa-refresh"></i> Reload</button>
+                    #00A539
                 </div>
             </div>
             <div class="grid-body">
