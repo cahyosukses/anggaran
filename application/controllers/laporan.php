@@ -32,7 +32,12 @@ class Laporan extends CI_Controller {
         );
         $data = $this->m_transaksi->get_list_penerimaan_banks(NULL, NULL, $search);
         $data['attr']  = $this->m_laporan->data_header();
-        $this->load->view('laporan/print-rekap-bank', $data);
+        $display = get_safe('cetak');
+        if ($display === 'printer') {
+            $this->load->view('laporan/print-rekap-bank', $data);
+        } else {
+            $this->load->view('laporan/excel/rekap-bank', $data);
+        }
     }
     
     function buku_pembantu_pajak() {
@@ -52,7 +57,12 @@ class Laporan extends CI_Controller {
         );
         $data = $this->m_transaksi->get_list_penerimaan_pajaks(NULL, NULL, $search);
         $data['attr']  = $this->m_laporan->data_header();
-        $this->load->view('laporan/print-rekap-pajak', $data);
+        $display = get_safe('cetak');
+        if ($display === 'printer') {
+            $this->load->view('laporan/print-rekap-pajak', $data);
+        } else {
+            $this->load->view('laporan/excel/rekap-pajak', $data);
+        }
     }
     
     function penggunaan_dana_bos() {
@@ -74,7 +84,12 @@ class Laporan extends CI_Controller {
         $data = $this->m_transaksi->get_list_pencairans(NULL, NULL, $search);
         $data['title'] = 'Laporan Penggunaan Dana Program BOS MA';
         $data['attr']  = $this->m_laporan->data_header();
-        $this->load->view('laporan/print-penggunaan-dana', $data);
+        $display = get_safe('cetak');
+        if ($display === 'printer') {
+            $this->load->view('laporan/print-penggunaan-dana', $data);
+        } else {
+            $this->load->view('laporan/excel/penggunaan-dana', $data);
+        }
     }
     
     function penggunaan_dana_non_personal() {
@@ -99,7 +114,12 @@ class Laporan extends CI_Controller {
             TAHAP I / TAHAP II:
             ';
         $data['attr']  = $this->m_laporan->data_header();
-        $this->load->view('laporan/print-penggunaan-dana-non-personal', $data);
+        $display = get_safe('cetak');
+        if ($display === 'printer') {
+            $this->load->view('laporan/print-penggunaan-dana-non-personal', $data);
+        } else {
+            $this->load->view('laporan/excel/penggunaan-dana-non-personal', $data);
+        }
     }
     
     function print_buku_kas_umum() {

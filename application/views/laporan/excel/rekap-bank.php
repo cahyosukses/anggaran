@@ -1,15 +1,14 @@
 <?php 
-    header_excel('buku-pembantu-kas.xls');
+    header_excel('rekap-bank.xls');
     foreach($data as $value); 
 ?>
-<table width="100%"><tr><td align="center" colspan="7"><?= $title ?></td></tr></table>
+<table width="100%"><tr><td align="center" colspan="7">BUKU PEMBANTU BANK<br/>Bulan: <?= tampil_bulan(get_safe('tanggal').'-01') ?></td></tr></table>
 <table width="100%">
     <tr><td colspan="2">Nama Madrasah</td><td colspan="5">: <?= $attr->nama ?></td></tr>
     <tr><td colspan="2">Desa/Kecamatan</td><td colspan="5">: <?= $attr->kelurahan.'/'.$attr->kecamatan ?></td></tr>
     <tr><td colspan="2">Kabupaten</td><td colspan="5">: <?= $attr->kabupaten ?></td></tr>
     <tr><td colspan="2">Provinsi</td><td colspan="5">: <?= $attr->provinsi ?></td></tr>
 </table>
-<br/>
 <table width="100%" border="1">
     <thead>
         <tr>
@@ -39,25 +38,25 @@
             <td>Saldo Bulan Sebelumnya</td>
             <td align="right"></td>
             <td align="right"></td>
-            <td align="right"></td>
+            <td align="right"><?= formatcurrency($last_saldo->sisa) ?></td>
         </tr>
         <?php 
-        $total = 0;
+        $total = $last_saldo->sisa;
         foreach ($data as $key => $value) { 
-            if ($value->keluar === 'Tidak') {
+            if ($value->jenis === 'Penerimaan') {
                 $total += $value->nominal;
             }
-            if ($value->keluar === 'Ya') {
+            if ($value->jenis === 'Penarikan') {
                 $total -= $value->nominal;
             }
             ?>
         <tr>
             <td align="center"><?= datefmysql($value->tanggal) ?></td>
             <td><?= $value->kode ?></td>
-            <td><?= $value->no_bukti ?></td>
-            <td><?= $value->uraian ?></td>
-            <td align="right"><?= ($value->keluar === 'Tidak')?formatcurrency($value->nominal):'' ?></td>
-            <td align="right"><?= ($value->keluar === 'Ya')?formatcurrency($value->nominal):'' ?></td>
+            <td><?= $value->nobukti ?></td>
+            <td><?= $value->keterangan ?></td>
+            <td align="right"><?= ($value->jenis === 'Penerimaan')?formatcurrency($value->nominal):'' ?></td>
+            <td align="right"><?= ($value->jenis === 'Penarikan')?formatcurrency($value->nominal):'' ?></td>
             <td align="right"><?= formatcurrency($total) ?></td>
         </tr>
         <?php } ?>
@@ -66,7 +65,8 @@
 
 <br/>
 <table align="right" width="100%">
-    <tr><td colspan="3" align="center">Mengetahui<br/>Kepala Madrasah</td><td>&nbsp;</td><td colspan="3" align="center">Bendahara</td> </tr>
+    <tr><td width="100%"  colspan="7" align="right"><?= $attr->kabupaten ?>, <?= indo_tgl(date("Y-m-d")) ?></td> </tr>
+    <tr><td colspan="3" align="center">Mengetahui<br/>Kepala Madrasah</td><td width="33%">&nbsp;</td><td colspan="3" align="center">Bendahara</td> </tr>
     <tr><td colspan="7">&nbsp;</td></tr>
     <tr><td colspan="7">&nbsp;</td></tr>
     <tr><td colspan="7">&nbsp;</td></tr>
