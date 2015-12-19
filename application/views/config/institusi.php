@@ -20,6 +20,7 @@
                 $('#ketua_komite').val(data.ketua_komite);
                 $('#bendahara').val(data.bendahara);
                 $('#nip_bendahara').val(data.nip_bendahara);
+                $('#nsm').val(data.nsm);
             }
         });
     }
@@ -132,6 +133,12 @@
                         <label class="form-label">NIP Bendahara:</label>
                             <div class="controls">
                                 <input type="text" name="nip_bendahara" id="nip_bendahara" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                        <label class="form-label">NSM:</label>
+                            <div class="controls">
+                                <input type="text" name="nsm" id="nsm" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">

@@ -2,11 +2,18 @@
 
 class Laporan extends CI_Controller {
     
+    function __construct() {
+        parent::__construct();
+        $this->load->model(array('m_masterdata'));
+    }
     function rincian_rkam() {
         $data['title'] = 'Rincian RKAM';
         $data['attr']  = $this->m_laporan->data_header();
         $data['thn_agg'] = $this->m_laporan->data_tahun_anggaran_aktif();
-        $data['list_data'] = $this->m_laporan->load_data_rincian_rka();
+        $search = array(
+            'id' => ''
+        );
+        $data['list_data'] = $this->m_masterdata->get_list_rka(NULL, NULL, $search);
         $this->load->view('laporan/rincian-rkam', $data);
     }
     

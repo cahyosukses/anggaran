@@ -79,7 +79,8 @@ class Config extends REST_Controller {
             'nip_kepala' => post_safe('nipkepsek'),
             'ketua_komite' => post_safe('ketua_komite'),
             'bendahara' => post_safe('bendahara'),
-            'nip_bendahara' => post_safe('nip_bendahara')
+            'nip_bendahara' => post_safe('nip_bendahara'),
+            'nsm' => post_safe('nsm')
         );
         $data = $this->m_config->save_config_institusi($array);
         $this->response($data, 200);

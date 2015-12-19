@@ -96,7 +96,7 @@ www.amitjakhu.com
 
 	<!--HEADER-->
     <div class="header">
-    <!--TITLE--><h1>Login Sistem Anggaran</h1><!--END TITLE-->
+    <!--TITLE--><h1>Login SIA BOS</h1><!--END TITLE-->
     <!--DESCRIPTION--><span>Fill out the form below to login to administrator's system.</span><!--END DESCRIPTION-->
     </div>
     <!--END HEADER-->

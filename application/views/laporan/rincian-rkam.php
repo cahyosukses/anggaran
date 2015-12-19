@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?= base_url('assets/css/printing-A4.css') ?>" media="all" />
+<link rel="stylesheet" href="<?= base_url('assets/css/printing-A4-landscape.css') ?>" media="all" />
 <script type="text/javascript">
     function cetak() {
         setTimeout(function(){ window.close();},300);
@@ -45,22 +45,60 @@
         <tbody>
         <?php 
         $total = 0;
-        foreach ($list_data as $key => $data) { ?>
+        foreach ($list_data['data'] as $key1 => $data) { ?>
         <tr valign="top">
-            <td align="center"><?= ++$key ?></td>
+            <td align="center"><?= ++$key1 ?></td>
             <td><?= $data->kode ?></td>
             <td><?= $data->nama_program ?></td>
-            <td align="right"><?= currency($data->nominal) ?></td>
-            <td align="center"><?= ($data->semester1 === '1')?'&checkmark;':'' ?></td>
-            <td align="center"><?= ($data->semester2 === '1')?'&checkmark;':'' ?></td>
+            <td align="right"></td>
+            <td align="center"></td>
+            <td align="center"></td>
         </tr>
-        <?php 
-        //$total = $total + $data->subtotal;
+            <?php 
+            foreach ($data->child1 as $key2 => $data2) { ?>
+            <tr>
+                <td></td>
+                <td><?= $data2->kode ?></td>
+                <td><div style="margin-left: 20px;"><?= $data2->nama_program ?></div></td>
+                <td align="right"><?= currency($data2->total) ?></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <?php 
+                foreach ($data2->child2 as $key3 => $data3) { ?>
+                <tr>
+                    <td></td>
+                    <td><?= $data3->kode ?></td>
+                    <td><div style="margin-left: 40px;"><?= $data3->nama_program ?></div></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr> 
+                <?php 
+                    foreach ($data3->child3 as $key4 => $data4) { ?>
+                    <tr>
+                        <td></td>
+                        <td><?= $data4->kode ?></td>
+                        <td><div style="margin-left: 60px;"><?= $data4->nama_program ?></div></td>
+                        <td></td>
+                        <td align="center"><?= ($data4->semester1 === '1')?'&checkmark;':'' ?></td>
+                        <td align="center"><?= ($data4->semester2 === '1')?'&checkmark;':'' ?></td>
+                    </tr>
+                    <?php 
+                        foreach ($data4->child4 as $key5 => $data5) { ?>
+                        <tr>
+                            <td></td>
+                            <td><?= $data5->kode ?></td>
+                            <td><div style="margin-left: 80px;"><?= $data5->nama_program ?></div></td>
+                            <td align="right"><?= currency($data5->nominal) ?></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <?php }
+                    }
+                }
+            }
         } ?>
-<!--        <tr>
-            <td colspan="3">TOTAL</td>
-            <td align="right"><?= rupiah($total) ?></td>
-        </tr>-->
         </tbody>
     </table>
     <br/>

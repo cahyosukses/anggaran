@@ -264,7 +264,7 @@
 						</div>				
 				</div>
 				<div class="profile-pic"> 
-					<img src="<?= base_url('assets/img/profiles/user.png') ?>"  alt="" data-src="<?= base_url('assets/img/profiles/user.png') ?>" data-src-retina="assets/img/profiles/avatar_small2x.jpg" width="35" height="35" /> 
+					<img src="<?= base_url('assets/img/profiles/depag.png') ?>"  alt="" data-src="<?= base_url('assets/img/profiles/depag.png') ?>" data-src-retina="assets/img/profiles/avatar_small2x.jpg" width="35" height="35" /> 
 				</div>       			
 			</div>
 		 <ul class="nav quick-section ">

@@ -54,6 +54,7 @@
                             '<td align="center">'+((i+1) + ((data.page - 1) * data.limit))+'</td>'+
                             '<td>'+v.tahun_anggaran+'</td>'+
                             '<td>'+v.semester+'</td>'+
+                            '<td>'+v.jumlah_siswa+'</td>'+
                             '<td align="center">'+aktif+'</td>'+
                             '<td align="center" class=aksi>'+
                                 '<button type="button" class="btn btn-default btn-mini" title="Klik untuk aktifasi" onclick="aktivasi(\''+v.id+'\')"><i class="fa fa-check-circle"></i></button> '+
@@ -230,7 +231,8 @@
                         <tr>
                           <th width="7%">No</th>
                           <th width="20%" class="left">Tahun Anggaran</th>
-                          <th width="45%" class="left">Semester</th>
+                          <th width="30%" class="left">Semester</th>
+                          <th width="15%" class="left">Jumlah Siswa</th>
                           <th width="10%" class="right">Aktifasi</th>
                           <th width="10%"></th>
                         </tr>

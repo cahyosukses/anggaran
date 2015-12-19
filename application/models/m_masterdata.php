@@ -4,12 +4,14 @@ class M_masterdata extends CI_Model {
     
     /*BERITA*/
     function get_list_rka($limit, $start, $search) {
-        //$limitation = null; 
+        $limitation = null; 
         $q = NULL;
         if ($search['id'] !== '') {
             $q.=" and id = '".$search['id']."'";
         }
-        $limitation =" limit $start , $limit";
+        if ($limit !== NULL) {
+            $limitation = " limit $start , $limit";
+        }
         
         $sql = "select * from tb_rka where id_parent is NULL $q order by id";
         $query = $this->db->query($sql.$limitation)->result();

@@ -28,7 +28,7 @@
         <center><h2><u>BUKTI PEMBAYARAN</u></h2></center>
         <br/>
         <table width="100%">
-            <tr><td>Sudah terima dari</td><td>:</td><td><?= $value->penerima ?></td></tr>
+            <tr><td>Sudah terima dari</td><td>:</td><td>Bendahara <?= $attr->nama ?></td></tr>
             <tr><td>Jumlah Uang</td><td>:</td><td><?= currency($value->nominal) ?></td></tr>
             <tr><td>Terbilang</td><td>:</td><td><?= terbilang($value->nominal) ?> RUPIAH</td></tr>
             <tr><td>Untuk Pembayaran</td><td>:</td><td><?= $value->uraian ?></td></tr>
@@ -38,8 +38,13 @@
             <tr><td width="55%" align="center"></td><td width="45%">Penerima</td> </tr>
             <tr><td>&nbsp;</td></tr>
             <tr><td>&nbsp;</td></tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr><td>&nbsp;</td></tr>
             <tr><td></td><td>( <?= $value->penerima ?> )</td></tr>
         </table>
+        <br/><br/>
+        <br/><br/>
         <br/><br/>
         <br/><br/>
         <br/><br/>
@@ -47,6 +52,7 @@
         <table align="right" width="100%">
             <tr><td width="55%"><b>Bendahara</b></td><td width="45%"></td> </tr>
             <tr><td width="55%"><b><?= $attr->nama ?></b></td><td width="45%"></td> </tr>
+            <tr><td></td><td>&nbsp;</td></tr>
             <tr><td></td><td>&nbsp;</td></tr>
             <tr><td></td><td>&nbsp;</td></tr>
             <tr><td>( <u><?= $attr->bendahara ?></u> )</td><td></td></tr>
