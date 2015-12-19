@@ -91,6 +91,7 @@ class Laporan extends CI_Controller {
         $data = $this->m_transaksi->get_list_pencairans(NULL, NULL, $search);
         $data['title'] = 'Laporan Penggunaan Dana Program BOS MA';
         $data['attr']  = $this->m_laporan->data_header();
+        $data['siswa'] = $this->db->get_where('tb_tahun_anggaran', array('aktifasi' => 'Ya'))->row();
         $display = get_safe('cetak');
         if ($display === 'printer') {
             $this->load->view('laporan/print-penggunaan-dana', $data);
@@ -121,6 +122,7 @@ class Laporan extends CI_Controller {
             TAHAP I / TAHAP II:
             ';
         $data['attr']  = $this->m_laporan->data_header();
+        $data['siswa'] = $this->db->get_where('tb_tahun_anggaran', array('aktifasi' => 'Ya'))->row();
         $display = get_safe('cetak');
         if ($display === 'printer') {
             $this->load->view('laporan/print-penggunaan-dana-non-personal', $data);

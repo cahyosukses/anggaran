@@ -43,11 +43,13 @@ class M_config extends CI_Model {
         $tahun  = post_safe('tahun');
         $aktifasi = post_safe('aktivasi');
         $semester = post_safe('semester');
+        $jml_siswa= post_safe('jml_siswa');
         $data = array(
             'id' => $id,
             'tahun_anggaran' => $tahun,
             'semester' => $semester,
-            'aktifasi' => $aktifasi
+            'aktifasi' => $aktifasi,
+            'jumlah_siswa' => $jml_siswa
         );
         if ($data['id'] === '') {
             if ($data['aktifasi'] === 'Ya') {

@@ -12,10 +12,10 @@
         <br/><br/>
         <table width="100%">
             <tr><td width="25%">Nama Madrasah</td><td width="1%">: </td><td width="74"><?= $attr->nama ?></td></tr>
-            <tr><td>NSM</td><td>:</td><td> </td></tr>
+            <tr><td>NSM</td><td>:</td><td><?= $attr->nsm ?></td></tr>
             <tr><td>Kabupaten</td><td>:</td><td> <?= $attr->kabupaten ?></td></tr>
             <tr><td>Provinsi</td><td>:</td><td> <?= $attr->provinsi ?></td></tr>
-            <tr><td>Total Jumlah Siswa</td><td>:</td><td> </td></tr>
+            <tr><td>Total Jumlah Siswa</td><td>:</td><td><?= $siswa->jumlah_siswa ?></td></tr>
             <tr><td>Jumlah Dana BOS Tahap I/II</td><td>:</td><td> </td></tr>
             <tr><td>Alamat</td><td>:</td><td><?= $attr->alamat ?></td></tr>
         </table>

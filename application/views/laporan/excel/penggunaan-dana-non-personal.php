@@ -5,10 +5,10 @@
 <table width="100%"><tr><td align="center" colspan="<?= count($data) ?>"><?= strtoupper($title) ?> <?= indo_tgl(date2mysql(get_safe('awal'))) ?> s.d <?= indo_tgl(date2mysql(get_safe('akhir'))) ?><br/>TINGKAT MADRASAH</td></tr></table>
 <table width="100%">
     <tr><td colspan="2">Nama Madrasah</td><td colspan="4">: <?= $attr->nama ?></td></tr>
-    <tr><td colspan="2">NSM</td><td colspan="4">:  </td></tr>
+    <tr><td colspan="2">NSM</td><td colspan="4">: <?= $attr->nsm ?> </td></tr>
     <tr><td colspan="2">Kabupaten</td><td colspan="4">:  <?= $attr->kabupaten ?></td></tr>
     <tr><td colspan="2">Provinsi</td><td colspan="4">:  <?= $attr->provinsi ?></td></tr>
-    <tr><td colspan="2">Total Jumlah Siswa</td><td colspan="4">:  </td></tr>
+    <tr><td colspan="2">Total Jumlah Siswa</td><td colspan="4">: <?= $siswa->jumlah_siswa ?> </td></tr>
     <tr><td colspan="2">Jumlah Dana BOS Tahap I/II</td><td colspan="4">:  </td></tr>
     <tr><td colspan="2">Alamat</td><td colspan="4">: <?= $attr->alamat ?></td></tr>
 </table>

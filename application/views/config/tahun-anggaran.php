@@ -104,6 +104,7 @@
                 $('#tahun').val(data.data[0].tahun_anggaran);
                 $('#semester').val(data.data[0].semester);
                 $('#aktivasi').val(data.data[0].aktifasi);
+                $('#jml_siswa').val(data.data[0].jumlah_siswa);
             }
         });
     }
@@ -269,6 +270,10 @@
                         <option value="1">1</option>
                         <option value="2">2</option>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">Jumlah Siswa:</label>
+                    <input type="text" name="jml_siswa"  class="form-control" id="jml_siswa">
                 </div>
                 <div class="form-group">
                     <label for="semester1" class="control-label">Aktivasi :</label>
