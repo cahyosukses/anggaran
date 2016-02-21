@@ -103,7 +103,7 @@
             <tr><td>&nbsp;</td></tr>
             <tr><td>&nbsp;</td></tr>
             <tr><td>&nbsp;</td></tr>
-            <tr><td align="center">( <?= $attr->kepala ?> )</td><td></td><td align="center">( <?= $attr->bendahara ?> )</td></tr>
+            <tr><td align="center">( <u><?= $attr->kepala ?></u> )<br/><?= $attr->nip_kepala ?></td><td></td><td align="center">( <u><?= $attr->bendahara ?></u> )<br/><?= $attr->nip_bendahara ?></td></tr>
         </table>
     </div>
 </body>

@@ -29,13 +29,14 @@ class M_config extends CI_Model {
         fwrite($create_file, get_mac_address());
         fclose($create_file);
         $output = 'Oke, Kunci Berhasil Dibuat';
+        
         $check = $this->db->get('tb_smart_card')->num_rows();
         if ($check === 0) {
             $this->db->insert('tb_smart_card', array('nama' => get_mac_address()));
         } else {
             $this->db->update('tb_smart_card', array('nama' => get_mac_address()));
         }
-        return $output;
+        return get_mac_address();
     }
     
     function save_tahun_anggaran() {

@@ -7,7 +7,7 @@
 </script>
 <body onload="cetak();">
     <div class="page">
-        <?php foreach($data as $value); ?>
+        <?php foreach($data as $values); ?>
         <center>BUKU PEMBANTU BANK<br/>Bulan: <?= tampil_bulan(get_safe('tanggal').'-01') ?></center>
         <br/><br/>
         <table width="100%">
@@ -50,35 +50,37 @@
                 </tr>
                 <?php 
                 $total = $last_saldo->sisa;
-                foreach ($data as $key => $value) { 
-                    if ($value->jenis === 'Penerimaan') {
-                        $total += $value->nominal;
-                    }
-                    if ($value->jenis === 'Penarikan') {
-                        $total -= $value->nominal;
-                    }
-                    ?>
-                <tr>
-                    <td align="center"><?= datefmysql($value->tanggal) ?></td>
-                    <td><?= $value->kode ?></td>
-                    <td><?= $value->nobukti ?></td>
-                    <td><?= $value->keterangan ?></td>
-                    <td align="right"><?= ($value->jenis === 'Penerimaan')?currency($value->nominal):'' ?></td>
-                    <td align="right"><?= ($value->jenis === 'Penarikan')?currency($value->nominal):'' ?></td>
-                    <td align="right"><?= currency($total) ?></td>
-                </tr>
-                <?php } ?>
+                if (is_array($data)) {
+                    foreach ($data as $key => $value) { 
+                        if ($value->jenis === 'Penerimaan') {
+                            $total += $value->nominal;
+                        }
+                        if ($value->jenis === 'Penarikan') {
+                            $total -= $value->nominal;
+                        }
+                        ?>
+                    <tr>
+                        <td align="center"><?= datefmysql($value->tanggal) ?></td>
+                        <td><?= $value->kode ?></td>
+                        <td><?= $value->nobukti ?></td>
+                        <td><?= $value->keterangan ?></td>
+                        <td align="right"><?= ($value->jenis === 'Penerimaan')?currency($value->nominal):'' ?></td>
+                        <td align="right"><?= ($value->jenis === 'Penarikan')?currency($value->nominal):'' ?></td>
+                        <td align="right"><?= currency($total) ?></td>
+                    </tr>
+                    <?php } 
+                } ?>
             </tbody>
         </table>
 
         <br/>
         <table align="right" width="100%">
-            <tr><td width="100%"  colspan="3" align="right"><?= $attr->kabupaten ?>, <?= indo_tgl($value->tanggal) ?></td> </tr>
+            <tr><td width="100%"  colspan="3" align="right"><?= $attr->kabupaten ?>, <?= isset($values->tanggal)?indo_tgl($values->tanggal):indo_tgl(date("Y-m-d")) ?></td> </tr>
             <tr><td width="33%" align="center">Mengetahui<br/>Kepala Madrasah</td><td width="33%">&nbsp;</td><td width="33%" align="center">Bendahara</td> </tr>
             <tr><td>&nbsp;</td></tr>
             <tr><td>&nbsp;</td></tr>
             <tr><td>&nbsp;</td></tr>
-            <tr><td align="center">( <?= $attr->kepala ?> )</td><td></td><td align="center">( <?= $attr->bendahara ?> )</td></tr>
+            <tr><td align="center">( <u><?= $attr->kepala ?></u> )<br/><?= $attr->nip_kepala ?></td><td></td><td align="center">( <u><?= $attr->bendahara ?></u> )<br/><?= $attr->nip_bendahara ?></td></tr>
         </table>
     </div>
 </body>

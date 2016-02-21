@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?= base_url('assets/css/printing-A4-landscape.css') ?>" media="all" />
+udahudahadasd<link rel="stylesheet" href="<?= base_url('assets/css/printing-A4-landscape.css') ?>" media="all" />
 <script type="text/javascript">
     function cetak() {
         setTimeout(function(){ window.close();},300);
@@ -69,7 +69,7 @@
             <tr><td>&nbsp;</td></tr>
             <tr><td>&nbsp;</td></tr>
             <tr><td>&nbsp;</td></tr>
-            <tr><td align="center">( <?= $attr->kepala ?> )</td><td></td><td align="center">( <?= $attr->bendahara ?> )</td></tr>
+            <tr><td align="center">( <u><?= $attr->kepala ?></u> )<br/><?= $attr->nip_kepala ?></td><td></td><td align="center">( <u><?= $attr->bendahara ?></u> )<br/><?= $attr->nip_bendahara ?></td></tr>
         </table>
     </div>
 </body>
